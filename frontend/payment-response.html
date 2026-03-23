@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AZA Payment Response</title>
+    <script src="/theme.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+  </head>
+  <body class="page-shell bg-surface font-body text-on-surface">
+    <main class="mx-auto flex min-h-screen max-w-3xl items-center px-4 py-16">
+      <section class="w-full rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-200/70 md:p-12">
+        <span id="result-pill" class="inline-flex rounded-full px-4 py-2 text-sm font-bold">Verified</span>
+        <h1 id="result-heading" class="mt-6 font-headline text-4xl font-black tracking-tighter text-primary">Payment confirmed on the server</h1>
+        <p id="result-summary" class="mt-4 max-w-2xl text-lg leading-relaxed text-on-surface-variant"></p>
+
+        <div id="error-box" class="mt-6 hidden rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"></div>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-2">
+          <div class="rounded-2xl bg-surface-container-low p-5">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-outline">Transaction Reference</p>
+            <p id="detail-txnref" class="mt-2 break-all font-headline text-lg font-bold text-primary"></p>
+          </div>
+          <div class="rounded-2xl bg-surface-container-low p-5">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-outline">Amount</p>
+            <p id="detail-amount" class="mt-2 font-headline text-lg font-bold text-primary"></p>
+          </div>
+          <div class="rounded-2xl bg-surface-container-low p-5">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-outline">Response Code</p>
+            <p id="detail-response-code" class="mt-2 font-headline text-lg font-bold text-primary"></p>
+          </div>
+          <div class="rounded-2xl bg-surface-container-low p-5">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-outline">Retrieval Reference</p>
+            <p id="detail-rrn" class="mt-2 break-all font-headline text-lg font-bold text-primary"></p>
+          </div>
+          <div class="rounded-2xl bg-surface-container-low p-5 md:col-span-2">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-outline">Payment Reference</p>
+            <p id="detail-payment-reference" class="mt-2 break-all font-headline text-lg font-bold text-primary"></p>
+          </div>
+        </div>
+
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+          <a class="rounded-xl bg-primary px-6 py-4 text-center font-bold text-white" href="/pay.html">Back to Checkout</a>
+          <a class="rounded-xl bg-surface-container-high px-6 py-4 text-center font-bold text-primary" href="/dashboard.html">Open Dashboard</a>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/assets/js/response.js"></script>
+  </body>
+</html>

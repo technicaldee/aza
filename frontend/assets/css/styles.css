@@ -1,0 +1,127 @@
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(0, 112, 234, 0.14), transparent 28%),
+    radial-gradient(circle at left center, rgba(75, 0, 130, 0.1), transparent 24%),
+    #f8f9fa;
+}
+
+.hero-gradient {
+  background:
+    radial-gradient(circle at top right, rgba(0, 112, 234, 0.32), transparent 32%),
+    linear-gradient(135deg, #1f012f 0%, #2e0052 45%, #4b0082 100%);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.mesh-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 244, 245, 0.92)),
+    radial-gradient(circle at top right, rgba(0, 112, 234, 0.15), transparent 30%);
+}
+
+.soft-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.ambient-ring {
+  position: absolute;
+  inset: auto;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+}
+
+.status-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.status-dot.ok {
+  background: #16a34a;
+}
+
+.status-dot.warn {
+  background: #ea580c;
+}
+
+.dev-console {
+  min-height: 200px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.floating-card {
+  box-shadow: 0 28px 70px rgba(17, 12, 35, 0.18);
+}
+
+.pay-method.active {
+  border-color: rgba(46, 0, 82, 0.2);
+  background: rgba(240, 219, 255, 0.56);
+}
+
+.toast-stack {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 100;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.toast {
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  color: #fff;
+  font-weight: 700;
+  max-width: 22rem;
+  box-shadow: 0 20px 40px rgba(25, 28, 29, 0.2);
+}
+
+.toast.info {
+  background: #2e0052;
+}
+
+.toast.success {
+  background: #166534;
+}
+
+.toast.warn {
+  background: #9a3412;
+}
+
+.toast.error {
+  background: #991b1b;
+}
+
+.page-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.page-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(75, 0, 130, 0.08), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(0, 112, 234, 0.08), transparent 28%);
+  pointer-events: none;
+  z-index: -1;
+}
