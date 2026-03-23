@@ -22,18 +22,81 @@ export async function initDb() {
     CREATE TABLE IF NOT EXISTS vendors (
       id UUID PRIMARY KEY,
       slug TEXT UNIQUE NOT NULL,
+      first_name TEXT,
+      last_name TEXT,
       full_name TEXT NOT NULL,
       business_name TEXT NOT NULL,
       email TEXT NOT NULL,
       phone TEXT NOT NULL,
       location TEXT NOT NULL,
       category TEXT NOT NULL,
-      bank_name TEXT NOT NULL,
-      account_number TEXT NOT NULL,
-      account_name TEXT NOT NULL,
+      bank_code TEXT,
+      bank_name TEXT,
+      account_number TEXT,
+      account_name TEXT,
+      password_hash TEXT,
+      nin TEXT,
+      nin_verified BOOLEAN NOT NULL DEFAULT FALSE,
+      nin_status TEXT NOT NULL DEFAULT 'PENDING',
+      nin_verified_at TIMESTAMPTZ,
       voice_language TEXT NOT NULL DEFAULT 'English',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ALTER COLUMN bank_name DROP NOT NULL;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ALTER COLUMN account_number DROP NOT NULL;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ALTER COLUMN account_name DROP NOT NULL;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS password_hash TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS first_name TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS last_name TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS bank_code TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS nin TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS nin_verified BOOLEAN NOT NULL DEFAULT FALSE;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS nin_status TEXT NOT NULL DEFAULT 'PENDING';
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS nin_verified_at TIMESTAMPTZ;
   `);
 
   await query(`

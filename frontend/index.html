@@ -46,6 +46,18 @@
         background: linear-gradient(135deg, #2e0052 0%, #4b0082 100%);
       }
     </style>
+    <script>
+      try {
+        const vendorId = localStorage.getItem("aza:vendor-id");
+        const pathname = window.location.pathname;
+
+        if (vendorId && (pathname === "/" || pathname.endsWith("/index.html"))) {
+          window.location.replace(`/dashboard.html?vendor=${vendorId}`);
+        }
+      } catch (error) {
+        console.warn("Unable to restore vendor session.", error);
+      }
+    </script>
   </head>
   <body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-primary">
     <nav class="fixed top-0 z-50 h-20 w-full bg-white/80 shadow-sm backdrop-blur-xl">
@@ -53,9 +65,14 @@
         <div class="text-2xl font-black tracking-tighter text-indigo-950 font-headline">
           <img alt="AZA Logo" class="h-10" src="/logo.png" />
         </div>
-        <a class="rounded-lg bg-gradient-to-r from-primary to-primary-container px-8 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-all duration-150 hover:scale-95" href="/signup.html">
-          Get Started
-        </a>
+        <div class="flex items-center gap-3">
+          <a class="font-bold text-primary transition-colors hover:text-primary-container" href="/signin.html">
+            Sign In
+          </a>
+          <a class="rounded-lg bg-gradient-to-r from-primary to-primary-container px-8 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-all duration-150 hover:scale-95" href="/signup.html">
+            Get Started
+          </a>
+        </div>
       </div>
     </nav>
 
@@ -210,8 +227,8 @@
           </p>
           <div class="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
             <a class="rounded-lg bg-secondary-container px-12 py-5 text-lg font-bold text-white shadow-xl transition-all hover:-translate-y-1" href="/signup.html">Create Free Account</a>
-            <a class="rounded-lg border border-white/20 bg-white/10 px-12 py-5 text-lg font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20" href="/signup.html">Contact Sales</a>
-          </div>
+            <a class="rounded-lg border border-white/20 bg-white/10 px-12 py-5 text-lg font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20" href="/signin.html">Sign In</a>
+               </div>
         </div>
       </section>
     </main>
@@ -219,7 +236,9 @@
     <footer class="w-full border-t border-slate-200 bg-slate-50 py-12">
       <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-8 md:grid-cols-2">
         <div class="space-y-4">
-          <div class="text-xl font-bold text-indigo-950 font-headline">AZA</div>
+          <div>
+            <img alt="AZA Logo" class="h-8" src="/logo.png" />
+          </div>
           <p class="max-w-xs text-sm leading-relaxed text-slate-500">Making financial inclusion a reality for every merchant in Nigeria.</p>
           <p class="text-sm leading-relaxed text-slate-500">© 2026 AZA. Powered by Interswitch</p>
         </div>

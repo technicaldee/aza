@@ -1,5 +1,10 @@
 import dotenv from "dotenv";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+dotenv.config({ path: resolve(__dirname, "../.env") });
 dotenv.config();
 
 const mode = (process.env.INTERSWITCH_MODE || "TEST").toUpperCase();
@@ -15,6 +20,7 @@ const defaultApiBaseUrl = isLive
 const defaultWebpayBaseUrl = isLive
   ? "https://newwebpay.interswitchng.com"
   : "https://newwebpay.qa.interswitchng.com";
+const defaultIdentityBaseUrl = "https://api-marketplace-routing.k8.isw.la/marketplace-routing/api/v1";
 
 export const config = {
   port,
@@ -24,6 +30,8 @@ export const config = {
   databaseUrl: process.env.DATABASE_URL || "",
   clientId: process.env.INTERSWITCH_CLIENT_ID || "",
   clientSecret: process.env.INTERSWITCH_CLIENT_SECRET || "",
+  identityClientId: process.env.INTERSWITCH_IDENTITY_CLIENT_ID || "",
+  identityClientSecret: process.env.INTERSWITCH_IDENTITY_CLIENT_SECRET || "",
   merchantCode: process.env.INTERSWITCH_MERCHANT_CODE || "",
   payItemId: process.env.INTERSWITCH_PAY_ITEM_ID || "",
   payItemName: process.env.INTERSWITCH_PAY_ITEM_NAME || "AZA Instant Payment",
@@ -32,6 +40,19 @@ export const config = {
     process.env.INTERSWITCH_PASSPORT_TOKEN_URL || defaultPassportTokenUrl,
   apiBaseUrl: process.env.INTERSWITCH_API_BASE_URL || defaultApiBaseUrl,
   webpayBaseUrl: process.env.INTERSWITCH_WEBPAY_BASE_URL || defaultWebpayBaseUrl,
+  identityPassportTokenUrl:
+    process.env.INTERSWITCH_IDENTITY_PASSPORT_TOKEN_URL || defaultPassportTokenUrl,
+  identityBaseUrl:
+    process.env.INTERSWITCH_IDENTITY_BASE_URL || defaultIdentityBaseUrl,
+  identityBankListUrl:
+    process.env.INTERSWITCH_IDENTITY_BANK_LIST_URL ||
+    `${defaultIdentityBaseUrl}/verify/identity/account-number/bank-list`,
+  identityAccountResolveUrl:
+    process.env.INTERSWITCH_IDENTITY_ACCOUNT_RESOLVE_URL ||
+    `${defaultIdentityBaseUrl}/verify/identity/account-number/resolve`,
+  identityNinUrl:
+    process.env.INTERSWITCH_IDENTITY_NIN_URL ||
+    `${defaultIdentityBaseUrl}/verify/identity/nin`,
   siteRedirectUrl:
     process.env.INTERSWITCH_SITE_REDIRECT_URL ||
     `${backendBaseUrl}/api/interswitch/redirect`,

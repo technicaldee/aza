@@ -52,6 +52,10 @@ export function getCurrentVendorId() {
   return localStorage.getItem("aza:vendor-id");
 }
 
+export function clearCurrentVendorId() {
+  localStorage.removeItem("aza:vendor-id");
+}
+
 export function buildMerchantLink(slug) {
   return `${window.location.origin}/pay.html?merchant=${slug}`;
 }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AZA NIN Verification</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2e0052",
+              "primary-container": "#4b0082",
+              secondary: "#0059bb",
+              "primary-fixed": "#f0dbff",
+              "surface-container-low": "#f3f4f5",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#e7e8e9",
+              outline: "#7d7483",
+              "outline-variant": "#cec3d3",
+              "on-surface": "#191c1d",
+              "on-surface-variant": "#4c4451"
+            },
+            fontFamily: {
+              headline: ["Ubuntu", "sans-serif"],
+              body: ["Ubuntu", "sans-serif"]
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="page-shell bg-surface text-on-surface font-body">
+    <main class="mx-auto grid min-h-screen max-w-7xl grid-cols-1 gap-10 px-4 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+      <section class="hero-gradient flex flex-col justify-between rounded-[2rem] p-10 text-white">
+        <div>
+          <a class="inline-flex" href="/">
+            <img alt="AZA Logo" class="h-10" src="/logo.png" />
+          </a>
+          <h1 class="mt-12 text-5xl font-black leading-tight tracking-tighter font-headline">
+            One more step before your dashboard opens.
+          </h1>
+          <p class="mt-6 max-w-xl text-lg text-white/80">
+            We verify your NIN against the first and last name you used during signup before enabling settlements and withdrawals.
+          </p>
+        </div>
+        <div class="rounded-2xl bg-white/10 p-4">
+          <p class="text-sm font-bold uppercase tracking-widest text-primary-fixed">Mandatory Verification</p>
+          <p class="mt-2 text-sm">Your dashboard opens immediately after a successful NIN match.</p>
+        </div>
+      </section>
+
+      <section class="rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-200/70 lg:p-10">
+        <div class="mb-8">
+          <p class="text-sm font-bold uppercase tracking-widest text-secondary">NIN Verification</p>
+          <h2 class="mt-3 text-3xl font-black tracking-tight text-primary font-headline">Verify your identity</h2>
+          <p class="mt-2 text-on-surface-variant">Your NIN must match the signup name exactly.</p>
+        </div>
+
+        <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="rounded-2xl bg-surface-container-low p-5">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-outline">First Name</p>
+            <p id="verify-first-name" class="mt-2 text-lg font-bold text-primary font-headline">--</p>
+          </div>
+          <div class="rounded-2xl bg-surface-container-low p-5">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-outline">Last Name</p>
+            <p id="verify-last-name" class="mt-2 text-lg font-bold text-primary font-headline">--</p>
+          </div>
+        </div>
+
+        <form id="nin-form" class="space-y-5">
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">NIN</span>
+            <input id="nin-input" class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="nin" maxlength="11" placeholder="Enter 11-digit NIN" required type="text" />
+          </label>
+          <p id="nin-status" class="text-sm text-on-surface-variant">We will verify this against your signup name.</p>
+
+          <div class="flex flex-col gap-4 pt-4 sm:flex-row">
+            <button id="nin-submit" class="rounded-xl bg-primary px-8 py-4 text-lg font-bold text-white shadow-lg shadow-primary/20" type="submit">
+              Verify NIN
+            </button>
+            <a class="rounded-xl bg-surface-container-high px-8 py-4 text-center text-lg font-bold text-primary" href="/signin.html">
+              Back to Sign In
+            </a>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="/assets/js/verify-nin.js"></script>
+  </body>
+</html>

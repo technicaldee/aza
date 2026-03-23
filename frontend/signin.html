@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AZA Vendor Sign In</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2e0052",
+              "primary-container": "#4b0082",
+              secondary: "#0059bb",
+              "primary-fixed": "#f0dbff",
+              "surface-container-low": "#f3f4f5",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#e7e8e9",
+              outline: "#7d7483",
+              "outline-variant": "#cec3d3",
+              "on-surface": "#191c1d",
+              "on-surface-variant": "#4c4451"
+            },
+            fontFamily: {
+              headline: ["Ubuntu", "sans-serif"],
+              body: ["Ubuntu", "sans-serif"]
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="page-shell bg-surface text-on-surface font-body">
+    <main class="mx-auto grid min-h-screen max-w-7xl grid-cols-1 gap-10 px-4 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+      <section class="hero-gradient flex flex-col justify-between rounded-[2rem] p-10 text-white">
+        <div>
+          <div class="flex items-center justify-between gap-4">
+            <a class="inline-flex" href="/">
+              <img alt="AZA Logo" class="h-10" src="/logo.png" />
+            </a>
+            <a class="font-bold text-white/90 transition-colors hover:text-white" href="/signup.html">Create Account</a>
+          </div>
+          <h1 class="mt-12 text-5xl font-black leading-tight tracking-tighter font-headline">
+            Welcome back to your vendor dashboard.
+          </h1>
+          <p class="mt-6 max-w-xl text-lg text-white/80">
+            Sign in with the email you used during vendor registration and continue managing your payment link and transactions.
+          </p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="rounded-2xl bg-white/10 p-4">
+            <p class="text-sm font-bold uppercase tracking-widest text-primary-fixed">Quick Access</p>
+            <p class="mt-2 text-sm">Jump straight back into your dashboard without re-registering.</p>
+          </div>
+          <div class="rounded-2xl bg-white/10 p-4">
+            <p class="text-sm font-bold uppercase tracking-widest text-primary-fixed">Live Payments</p>
+            <p class="mt-2 text-sm">See your latest Quickteller payments and merchant link activity.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-200/70 lg:p-10">
+        <div class="mb-8">
+          <p class="text-sm font-bold uppercase tracking-widest text-secondary">Vendor Sign In</p>
+          <h2 class="mt-3 text-3xl font-black tracking-tight text-primary font-headline">Open your dashboard</h2>
+          <p class="mt-2 text-on-surface-variant">Enter your vendor email and password to continue.</p>
+        </div>
+
+        <form id="signin-form" class="space-y-5">
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Email</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="email" placeholder="musa@example.com" required type="email" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Password</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="password" placeholder="Enter your password" required type="password" />
+          </label>
+
+          <div class="flex flex-col gap-4 pt-4 sm:flex-row">
+            <button id="signin-submit" class="rounded-xl bg-primary px-8 py-4 text-lg font-bold text-white shadow-lg shadow-primary/20" type="submit">
+              Sign In
+            </button>
+            <a class="rounded-xl border border-outline-variant/30 px-8 py-4 text-center text-lg font-bold text-primary" href="/signup.html">
+              Create Account
+            </a>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="/assets/js/signin.js"></script>
+  </body>
+</html>

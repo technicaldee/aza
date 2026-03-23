@@ -77,6 +77,36 @@ Frontend:
 Backend:
 - `http://localhost:4000`
 
+## Deploy on Vercel
+
+Deploy frontend and backend as two separate Vercel projects from the same repo.
+
+1. Create a **frontend** Vercel project with root directory `frontend/`.
+2. Create a **backend** Vercel project with root directory `backend/`.
+3. Add environment variables:
+
+Backend project:
+- `DATABASE_URL`
+- `INTERSWITCH_CLIENT_ID`
+- `INTERSWITCH_CLIENT_SECRET`
+- `INTERSWITCH_MERCHANT_CODE` (or ensure it can be derived from token claims)
+- `INTERSWITCH_PAY_ITEM_ID`
+- `INTERSWITCH_PAY_ITEM_NAME`
+- `INTERSWITCH_CURRENCY`
+- `INTERSWITCH_MODE`
+- `INTERSWITCH_PASSPORT_TOKEN_URL`
+- `INTERSWITCH_API_BASE_URL`
+- `INTERSWITCH_WEBPAY_BASE_URL`
+- `INTERSWITCH_WEBHOOK_SECRET` (if using signed webhook validation)
+- `BACKEND_BASE_URL=https://<your-backend-project>.vercel.app`
+- `FRONTEND_BASE_URL=https://<your-frontend-project>.vercel.app`
+- `INTERSWITCH_SITE_REDIRECT_URL=https://<your-backend-project>.vercel.app/api/interswitch/redirect`
+
+Frontend project:
+- `VITE_API_BASE_URL=https://<your-backend-project>.vercel.app/api`
+
+After both are deployed, frontend calls backend through `VITE_API_BASE_URL`, and backend redirects/response URLs resolve to the deployed domains.
+
 ## Useful backend endpoints
 
 - `GET /api/health`

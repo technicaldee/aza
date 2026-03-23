@@ -44,9 +44,9 @@
     </style>
   </head>
   <body class="page-shell bg-surface text-on-surface">
-    <aside class="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-slate-100 bg-white p-4">
+    <aside class="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col bg-white p-4 shadow-[10px_0_40px_rgba(15,23,42,0.04)]">
       <div class="mb-10 px-2">
-        <span class="text-lg font-black uppercase tracking-tighter text-indigo-900">AZA</span>
+        <img alt="AZA Logo" class="h-10" src="/logo.png" />
       </div>
       <div class="mb-8 flex items-center gap-3 px-2">
         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-fixed text-primary">
@@ -58,22 +58,23 @@
         </div>
       </div>
       <nav class="flex-grow space-y-1">
-        <a class="flex items-center gap-3 rounded-lg border-r-4 border-indigo-600 bg-indigo-50 px-3 py-3 text-sm font-medium text-indigo-700 font-headline" href="/dashboard.html">
+        <button id="tab-overview" class="flex w-full items-center gap-3 rounded-lg bg-indigo-50 px-3 py-3 text-sm font-medium text-indigo-700 font-headline" type="button">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Overview</span>
-        </a>
-        <a class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-500 transition-all duration-200 hover:bg-slate-50 hover:pl-4 font-headline" href="/signup.html">
-          <span class="material-symbols-outlined">person_add</span>
-          <span>Register Vendor</span>
-        </a>
-        <a class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-500 transition-all duration-200 hover:bg-slate-50 hover:pl-4 font-headline" href="/">
-          <span class="material-symbols-outlined">home</span>
-          <span>Landing Page</span>
-        </a>
+        </button>
+        <button id="tab-withdraw" class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-500 transition-all duration-200 hover:bg-slate-50 font-headline" type="button">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+          <span>Withdraw</span>
+        </button>
       </nav>
-      <button id="copy-payment-link" class="mt-auto w-full rounded-lg bg-gradient-to-br from-primary to-primary-container px-4 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 font-headline">
-        Copy Payment Link
-      </button>
+      <div class="mt-auto space-y-3">
+        <button id="copy-payment-link" class="w-full rounded-lg bg-gradient-to-br from-primary to-primary-container px-4 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 font-headline">
+          Copy Payment Link
+        </button>
+        <button id="logout-button" class="w-full rounded-lg bg-surface-container-low px-4 py-3 text-sm font-bold text-primary font-headline transition-colors hover:bg-surface-container-high" type="button">
+          Log Out
+        </button>
+      </div>
     </aside>
 
     <main class="ml-64 min-h-screen p-8 lg:p-12">
@@ -94,6 +95,7 @@
         </div>
       </header>
 
+      <section id="overview-panel">
       <div class="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
         <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary-container p-8 group md:col-span-2">
           <div class="absolute right-0 top-0 p-8 opacity-10 transition-transform duration-500 group-hover:scale-110">
@@ -108,7 +110,7 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-col justify-between rounded-xl border-b-4 border-secondary bg-surface-container-lowest p-8 shadow-sm">
+        <div class="flex flex-col justify-between rounded-xl bg-surface-container-lowest p-8 shadow-sm">
           <div>
             <p class="mb-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Total Transactions</p>
             <h2 id="total-transactions" class="text-6xl font-black tracking-tighter text-primary font-headline">0</h2>
@@ -159,6 +161,42 @@
           </div>
         </div>
       </div>
+      </section>
+
+      <section id="withdraw-panel" class="hidden max-w-3xl">
+        <div class="rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-200/70 lg:p-10">
+          <div class="mb-8">
+            <p class="text-sm font-bold uppercase tracking-widest text-secondary">Withdraw</p>
+            <h2 class="mt-3 text-3xl font-black tracking-tight text-primary font-headline">Payout account details</h2>
+            <p class="mt-2 text-on-surface-variant">Add the bank details AZA should use for your settlements. These details stay private and never show on the public payment page.</p>
+          </div>
+
+          <form id="payout-form" class="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <label class="block">
+              <span class="mb-2 block text-sm font-bold text-on-surface-variant">Bank</span>
+              <select id="bank-code" class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="bankCode" required>
+                <option value="">Loading banks...</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="mb-2 block text-sm font-bold text-on-surface-variant">Account Number</span>
+              <input id="account-number" class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="accountNumber" placeholder="0123456789" required type="text" />
+            </label>
+            <label class="block md:col-span-2">
+              <span class="mb-2 block text-sm font-bold text-on-surface-variant">Resolved Account Name</span>
+              <input id="resolved-account-name" class="w-full rounded-xl border border-outline-variant/30 bg-surface-container-low px-4 py-4 font-semibold text-on-surface focus:ring-0" name="resolvedAccountName" placeholder="Account name will appear automatically" readonly type="text" />
+            </label>
+            <p id="account-match-status" class="md:col-span-2 text-sm text-on-surface-variant">Select a bank and enter a valid account number to resolve the account name.</p>
+
+            <div class="md:col-span-2 flex flex-col gap-4 pt-4 sm:flex-row sm:items-center">
+              <button id="save-payout-details" class="rounded-xl bg-primary px-8 py-4 text-lg font-bold text-white shadow-lg shadow-primary/20" type="submit">
+                Save payout details
+              </button>
+              <p class="text-sm text-on-surface-variant">You can update these details anytime before withdrawal.</p>
+            </div>
+          </form>
+        </div>
+      </section>
     </main>
 
     <script type="module" src="/assets/js/dashboard.js"></script>

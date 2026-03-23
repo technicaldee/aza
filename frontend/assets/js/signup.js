@@ -17,7 +17,7 @@ form?.addEventListener("submit", async (event) => {
     const result = await registerVendor(payload);
     setCurrentVendorId(result.vendor.id);
     showToast("Vendor account created.", "success");
-    window.location.href = `/dashboard.html?vendor=${result.vendor.id}`;
+    window.location.href = `/verify-nin.html?vendor=${result.vendor.id}`;
   } catch (error) {
     showToast(error.message, "error");
   } finally {

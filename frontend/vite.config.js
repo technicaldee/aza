@@ -7,6 +7,8 @@ export default defineConfig({
       input: {
         index: resolve(__dirname, "index.html"),
         signup: resolve(__dirname, "signup.html"),
+        signin: resolve(__dirname, "signin.html"),
+        verifyNin: resolve(__dirname, "verify-nin.html"),
         dashboard: resolve(__dirname, "dashboard.html"),
         pay: resolve(__dirname, "pay.html"),
         paymentResponse: resolve(__dirname, "payment-response.html")

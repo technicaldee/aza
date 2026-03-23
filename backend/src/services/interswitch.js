@@ -1,10 +1,17 @@
 import crypto from "node:crypto";
 import { config, getCheckoutScriptUrl, getRedirectActionUrl } from "../config.js";
 
-const tokenCache = {
-  accessToken: "",
-  expiresAt: 0,
-  claims: null
+const tokenCaches = {
+  payments: {
+    accessToken: "",
+    expiresAt: 0,
+    claims: null
+  },
+  identity: {
+    accessToken: "",
+    expiresAt: 0,
+    claims: null
+  }
 };
 
 function ensureResponseOk(response, data) {
@@ -42,8 +49,8 @@ function parseJwtClaims(token) {
   }
 }
 
-function buildBasicAuth() {
-  return Buffer.from(`${config.clientId}:${config.clientSecret}`).toString("base64");
+function buildBasicAuth(clientId, clientSecret) {
+  return Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 }
 
 async function parseJson(response) {
@@ -67,25 +74,35 @@ async function interswitchRequest(url, options = {}) {
   return data;
 }
 
-export async function getAccessToken(forceRefresh = false) {
+async function getOAuthToken({
+  cacheKey,
+  forceRefresh = false,
+  clientId,
+  clientSecret,
+  tokenUrl
+}) {
   const now = Date.now();
+  const cache = tokenCaches[cacheKey];
 
-  if (!forceRefresh && tokenCache.accessToken && now < tokenCache.expiresAt) {
+  if (!forceRefresh && cache.accessToken && now < cache.expiresAt) {
     return {
-      accessToken: tokenCache.accessToken,
-      claims: tokenCache.claims
+      accessToken: cache.accessToken,
+      claims: cache.claims
     };
   }
 
-  if (!config.clientId || !config.clientSecret) {
-    throw new Error("Missing INTERSWITCH_CLIENT_ID or INTERSWITCH_CLIENT_SECRET.");
+  if (!clientId || !clientSecret) {
+    throw new Error("Missing Interswitch client credentials.");
   }
 
-  const body = new URLSearchParams({ grant_type: "client_credentials" });
-  const data = await interswitchRequest(config.passportTokenUrl, {
+  const body = new URLSearchParams({
+    grant_type: "client_credentials",
+    scope: "profile"
+  });
+  const data = await interswitchRequest(tokenUrl, {
     method: "POST",
     headers: {
-      Authorization: `Basic ${buildBasicAuth()}`,
+      Authorization: `Basic ${buildBasicAuth(clientId, clientSecret)}`,
       "Content-Type": "application/x-www-form-urlencoded"
     },
     body
@@ -95,11 +112,31 @@ export async function getAccessToken(forceRefresh = false) {
   const expiresIn = Number(data?.expires_in || 0);
   const claims = parseJwtClaims(accessToken);
 
-  tokenCache.accessToken = accessToken;
-  tokenCache.claims = claims;
-  tokenCache.expiresAt = now + Math.max(expiresIn - 60, 30) * 1000;
+  cache.accessToken = accessToken;
+  cache.claims = claims;
+  cache.expiresAt = now + Math.max(expiresIn - 60, 30) * 1000;
 
   return { accessToken, claims };
+}
+
+export async function getAccessToken(forceRefresh = false) {
+  return getOAuthToken({
+    cacheKey: "payments",
+    forceRefresh,
+    clientId: config.clientId,
+    clientSecret: config.clientSecret,
+    tokenUrl: config.passportTokenUrl
+  });
+}
+
+export async function getIdentityAccessToken(forceRefresh = false) {
+  return getOAuthToken({
+    cacheKey: "identity",
+    forceRefresh,
+    clientId: config.identityClientId,
+    clientSecret: config.identityClientSecret,
+    tokenUrl: config.identityPassportTokenUrl
+  });
 }
 
 export async function resolveMerchantCode() {
@@ -182,6 +219,18 @@ async function authenticatedPost(pathname, payload) {
   });
 }
 
+async function authenticatedIdentityRequest(url, options = {}) {
+  const { accessToken } = await getIdentityAccessToken();
+  return interswitchRequest(url, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(options.headers || {})
+    }
+  });
+}
+
 export async function initializeWalletPayment(payload) {
   return authenticatedPost("/collections/api/v1/wallet-pay/initialize", payload);
 }
@@ -201,6 +250,33 @@ export async function createStaticVirtualAccount(payload) {
     accountName: payload.accountName,
     merchantCode,
     ...(payload.provider ? { provider: payload.provider } : {})
+  });
+}
+
+export async function getIdentityBankList() {
+  return authenticatedIdentityRequest(config.identityBankListUrl, {
+    method: "GET"
+  });
+}
+
+export async function verifyNinIdentity(payload) {
+  return authenticatedIdentityRequest(config.identityNinUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      nin: payload.nin
+    })
+  });
+}
+
+export async function resolveIdentityAccount(payload) {
+  return authenticatedIdentityRequest(config.identityAccountResolveUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      accountNumber: payload.accountNumber,
+      bankCode: payload.bankCode
+    })
   });
 }
 

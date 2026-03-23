@@ -34,8 +34,44 @@ export function registerVendor(payload) {
   });
 }
 
+export function signInVendor(payload) {
+  return apiRequest("/vendors/signin", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+export function getVendor(vendorId) {
+  return apiRequest(`/vendors/${vendorId}`);
+}
+
 export function getVendorDashboard(vendorId) {
   return apiRequest(`/vendors/${vendorId}/dashboard`);
+}
+
+export function getIdentityBanks() {
+  return apiRequest("/vendors/banks");
+}
+
+export function verifyVendorNin(vendorId, payload) {
+  return apiRequest(`/vendors/${vendorId}/verify-nin`, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+export function resolveVendorAccount(vendorId, payload) {
+  return apiRequest(`/vendors/${vendorId}/resolve-account`, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+export function updateVendorPayoutDetails(vendorId, payload) {
+  return apiRequest(`/vendors/${vendorId}/payout-details`, {
+    method: "PUT",
+    body: JSON.stringify(payload)
+  });
 }
 
 export function getPublicMerchant(slug) {
