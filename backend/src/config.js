@@ -12,6 +12,7 @@ export const config = {
   mode,
   backendBaseUrl,
   frontendBaseUrl,
+  databaseUrl: process.env.DATABASE_URL || "",
   clientId: process.env.INTERSWITCH_CLIENT_ID || "",
   clientSecret: process.env.INTERSWITCH_CLIENT_SECRET || "",
   merchantCode: process.env.INTERSWITCH_MERCHANT_CODE || "",

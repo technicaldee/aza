@@ -1,37 +1,5 @@
 import crypto from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const here = dirname(fileURLToPath(import.meta.url));
-const dataDir = resolve(here, "../../data");
-const dbFile = resolve(dataDir, "db.json");
-
-const initialDb = {
-  vendors: [],
-  payments: []
-};
-
-async function ensureDb() {
-  await mkdir(dataDir, { recursive: true });
-
-  try {
-    await readFile(dbFile, "utf8");
-  } catch {
-    await writeFile(dbFile, JSON.stringify(initialDb, null, 2));
-  }
-}
-
-async function readDb() {
-  await ensureDb();
-  const content = await readFile(dbFile, "utf8");
-  return JSON.parse(content);
-}
-
-async function writeDb(db) {
-  await ensureDb();
-  await writeFile(dbFile, JSON.stringify(db, null, 2));
-}
+import { query } from "./db.js";
 
 function slugify(value) {
   return String(value || "")
@@ -42,12 +10,53 @@ function slugify(value) {
     .slice(0, 48);
 }
 
-function createUniqueSlug(seed, vendors) {
+function mapVendor(row) {
+  if (!row) {
+    return null;
+  }
+
+  return {
+    id: row.id,
+    slug: row.slug,
+    fullName: row.full_name,
+    businessName: row.business_name,
+    email: row.email,
+    phone: row.phone,
+    location: row.location,
+    category: row.category,
+    bankName: row.bank_name,
+    accountNumber: row.account_number,
+    accountName: row.account_name,
+    voiceLanguage: row.voice_language,
+    createdAt: row.created_at
+  };
+}
+
+function mapPayment(row) {
+  return {
+    id: row.id,
+    vendorId: row.vendor_id,
+    merchantSlug: row.merchant_slug,
+    payerName: row.payer_name,
+    amount: Number(row.amount),
+    channel: row.channel,
+    status: row.status,
+    note: row.note,
+    createdAt: row.created_at
+  };
+}
+
+async function slugExists(slug) {
+  const result = await query("SELECT 1 FROM vendors WHERE slug = $1 LIMIT 1", [slug]);
+  return result.rowCount > 0;
+}
+
+async function createUniqueSlug(seed) {
   const base = slugify(seed) || "aza-vendor";
   let slug = base;
   let counter = 2;
 
-  while (vendors.some((vendor) => vendor.slug === slug)) {
+  while (await slugExists(slug)) {
     slug = `${base}-${counter}`;
     counter += 1;
   }
@@ -56,10 +65,9 @@ function createUniqueSlug(seed, vendors) {
 }
 
 export async function createVendor(payload) {
-  const db = await readDb();
   const vendor = {
     id: crypto.randomUUID(),
-    slug: createUniqueSlug(payload.businessName || payload.fullName, db.vendors),
+    slug: await createUniqueSlug(payload.businessName || payload.fullName),
     fullName: payload.fullName,
     businessName: payload.businessName,
     email: payload.email,
@@ -69,49 +77,77 @@ export async function createVendor(payload) {
     bankName: payload.bankName,
     accountNumber: payload.accountNumber,
     accountName: payload.accountName,
-    voiceLanguage: payload.voiceLanguage || "English",
-    createdAt: new Date().toISOString()
+    voiceLanguage: payload.voiceLanguage || "English"
   };
 
-  db.vendors.push(vendor);
-  await writeDb(db);
-  return vendor;
+  const result = await query(
+    `
+      INSERT INTO vendors (
+        id, slug, full_name, business_name, email, phone, location, category,
+        bank_name, account_number, account_name, voice_language
+      )
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+      RETURNING *
+    `,
+    [
+      vendor.id,
+      vendor.slug,
+      vendor.fullName,
+      vendor.businessName,
+      vendor.email,
+      vendor.phone,
+      vendor.location,
+      vendor.category,
+      vendor.bankName,
+      vendor.accountNumber,
+      vendor.accountName,
+      vendor.voiceLanguage
+    ]
+  );
+
+  return mapVendor(result.rows[0]);
 }
 
 export async function getVendorById(vendorId) {
-  const db = await readDb();
-  return db.vendors.find((vendor) => vendor.id === vendorId) || null;
+  const result = await query("SELECT * FROM vendors WHERE id = $1 LIMIT 1", [vendorId]);
+  return mapVendor(result.rows[0]);
 }
 
 export async function getVendorBySlug(slug) {
-  const db = await readDb();
-  return db.vendors.find((vendor) => vendor.slug === slug) || null;
+  const result = await query("SELECT * FROM vendors WHERE slug = $1 LIMIT 1", [slug]);
+  return mapVendor(result.rows[0]);
 }
 
 export async function listPaymentsForVendor(vendorId) {
-  const db = await readDb();
-  return db.payments
-    .filter((payment) => payment.vendorId === vendorId)
-    .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+  const result = await query(
+    "SELECT * FROM payments WHERE vendor_id = $1 ORDER BY created_at DESC",
+    [vendorId]
+  );
+  return result.rows.map(mapPayment);
 }
 
 export async function createPayment(payload) {
-  const db = await readDb();
-  const payment = {
-    id: crypto.randomUUID(),
-    vendorId: payload.vendorId,
-    merchantSlug: payload.merchantSlug,
-    payerName: payload.payerName || "Customer",
-    amount: Number(payload.amount),
-    channel: payload.channel,
-    status: payload.status || "COMPLETED",
-    note: payload.note || "",
-    createdAt: new Date().toISOString()
-  };
+  const result = await query(
+    `
+      INSERT INTO payments (
+        id, vendor_id, merchant_slug, payer_name, amount, channel, status, note
+      )
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      RETURNING *
+    `,
+    [
+      crypto.randomUUID(),
+      payload.vendorId,
+      payload.merchantSlug,
+      payload.payerName || "Customer",
+      Number(payload.amount),
+      payload.channel,
+      payload.status || "COMPLETED",
+      payload.note || ""
+    ]
+  );
 
-  db.payments.push(payment);
-  await writeDb(db);
-  return payment;
+  return mapPayment(result.rows[0]);
 }
 
 export async function getDashboard(vendorId) {
@@ -129,7 +165,7 @@ export async function getDashboard(vendorId) {
     stats: {
       totalTransactions: payments.length,
       totalVolume,
-      averageTicket: payments.length ? Math.round(totalVolume / payments.length) : 0
+      averageTicket: payments.length ? totalVolume / payments.length : 0
     },
     payments
   };

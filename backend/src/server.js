@@ -8,6 +8,7 @@ import vendorsRouter from "./routes/vendors.js";
 import nonCardRouter from "./routes/non-card.js";
 import transactionsRouter from "./routes/transactions.js";
 import webhookRouter from "./routes/webhooks.js";
+import { initDb, query } from "./services/db.js";
 
 const app = express();
 
@@ -26,11 +27,17 @@ app.use(morgan("dev"));
 app.use(express.json({ verify: rawBodySaver }));
 app.use(express.urlencoded({ extended: false, verify: rawBodySaver }));
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    ok: true,
-    mode: config.mode
-  });
+app.get("/api/health", async (req, res, next) => {
+  try {
+    await query("SELECT 1");
+    res.json({
+      ok: true,
+      mode: config.mode,
+      database: "connected"
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.use("/api/config", configRouter);
@@ -55,6 +62,15 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(config.port, () => {
-  console.log(`AZA backend listening on ${config.backendBaseUrl}`);
+async function start() {
+  await initDb();
+
+  app.listen(config.port, () => {
+    console.log(`AZA backend listening on ${config.backendBaseUrl}`);
+  });
+}
+
+start().catch((error) => {
+  console.error("Failed to start backend:", error);
+  process.exit(1);
 });

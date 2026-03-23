@@ -1,14 +1,17 @@
 # AZA Web Checkout Demo
 
-This repo is split into a separate `frontend/` and `backend/` so you can keep the merchant-facing experience isolated from the server-side Interswitch verification and token work.
+This repo is split into a separate `frontend/` and `backend/` so you can keep the merchant-facing experience isolated from the server-side Interswitch verification, checkout work, and Postgres-backed merchant data.
 
 ## What is included
 
 - A landing page based on your AZA mockup
-- A vendor dashboard page based on your mockup
-- A checkout page wired for:
-  - Interswitch inline checkout
-  - Interswitch web redirect checkout
+- A vendor signup page that persists merchant records in Postgres
+- A live vendor dashboard page based on your mockup
+- A clean merchant payment page opened by merchant slug
+- A backend that stores signup data and payment history in Postgres
+- Existing Interswitch helper routes for:
+  - inline checkout
+  - web redirect checkout
   - server-side transaction requery
   - wallet initialize and status checks
   - static transfer account generation
@@ -54,9 +57,10 @@ npm install
 cp backend/.env.example backend/.env
 ```
 
-3. Add your actual Interswitch values in `backend/.env`.
+3. Add your actual values in `backend/.env`.
 
 Important:
+- `DATABASE_URL` is required. The app now uses Postgres as the source of truth for vendors and payments.
 - `INTERSWITCH_CLIENT_ID` and `INTERSWITCH_CLIENT_SECRET` are for server-side token generation.
 - `INTERSWITCH_PAY_ITEM_ID` is required before inline checkout and redirect checkout can open successfully.
 - `INTERSWITCH_SITE_REDIRECT_URL` should point to the backend redirect handler so the backend can verify the transaction before the frontend shows success.
@@ -77,6 +81,10 @@ Backend:
 
 - `GET /api/health`
 - `GET /api/config/public`
+- `POST /api/vendors`
+- `GET /api/vendors/public/:slug`
+- `GET /api/vendors/:vendorId/dashboard`
+- `POST /api/payments`
 - `POST /api/auth/token`
 - `POST /api/transactions/requery`
 - `POST /api/interswitch/redirect`
@@ -90,6 +98,7 @@ Backend:
 - Redirect notifications from Interswitch are not trusted directly. The backend requeries the transaction before redirecting the customer to the final frontend response page.
 - The webhook route verifies `X-Interswitch-Signature` when `INTERSWITCH_WEBHOOK_SECRET` is set.
 - The checkout buttons stay usable only when the required merchant config is available.
+- On startup, the backend creates the `vendors` and `payments` tables if they do not exist.
 
 ## Docs used
 
