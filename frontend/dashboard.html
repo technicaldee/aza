@@ -1,303 +1,166 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>AZA Vendor Dashboard</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AZA Vendor Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <script>
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
             colors: {
-              "on-error-container": "#93000a",
-              "secondary-fixed-dim": "#adc7ff",
-              "primary-fixed-dim": "#ddb7ff",
-              "on-tertiary-fixed-variant": "#693c12",
-              "on-secondary": "#ffffff",
-              "inverse-primary": "#ddb7ff",
+              primary: "#2e0052",
               "primary-container": "#4b0082",
-              "secondary": "#0059bb",
-              "outline-variant": "#cec3d3",
-              "on-secondary-fixed": "#001a41",
-              "on-tertiary-fixed": "#2f1500",
-              "on-primary-fixed-variant": "#622599",
-              "tertiary-container": "#4f2700",
-              "tertiary-fixed-dim": "#fbb884",
-              "primary": "#2e0052",
-              "on-primary": "#ffffff",
-              "surface-container-highest": "#e1e3e4",
-              "on-secondary-fixed-variant": "#004493",
-              "on-surface-variant": "#4c4451",
-              "outline": "#7d7483",
-              "surface-variant": "#e1e3e4",
-              "tertiary-fixed": "#ffdcc3",
-              "on-primary-fixed": "#2c0050",
-              "on-tertiary-container": "#c98c5c",
-              "on-background": "#191c1d",
-              "inverse-on-surface": "#f0f1f2",
-              "surface": "#f8f9fa",
-              "surface-container-high": "#e7e8e9",
-              "on-error": "#ffffff",
-              "error-container": "#ffdad6",
-              "surface-dim": "#d9dadb",
-              "on-secondary-container": "#fefcff",
-              "surface-container": "#edeeef",
-              "on-surface": "#191c1d",
-              "on-tertiary": "#ffffff",
-              "surface-bright": "#f8f9fa",
-              "secondary-container": "#0070ea",
-              "surface-container-low": "#f3f4f5",
+              secondary: "#0059bb",
               "primary-fixed": "#f0dbff",
-              "background": "#f8f9fa",
-              "inverse-surface": "#2e3132",
-              "surface-tint": "#7b41b3",
               "secondary-fixed": "#d8e2ff",
-              "on-primary-container": "#ba7ef4",
+              "surface-container-low": "#f3f4f5",
               "surface-container-lowest": "#ffffff",
-              "error": "#ba1a1a",
-              "tertiary": "#301600"
+              "surface-container-high": "#e7e8e9",
+              "surface-bright": "#f8f9fa",
+              outline: "#7d7483",
+              "outline-variant": "#cec3d3",
+              "on-surface": "#191c1d",
+              "on-surface-variant": "#4c4451"
             },
             fontFamily: {
-              "headline": ["Ubuntu", "sans-serif"],
-              "body": ["Ubuntu", "sans-serif"],
-              "label": ["Ubuntu", "sans-serif"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
-        },
-      }
+              headline: ["Ubuntu", "sans-serif"],
+              body: ["Ubuntu", "sans-serif"]
+            }
+          }
+        }
+      };
     </script>
-<style>
+    <style>
       .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
         vertical-align: middle;
       }
-      body {
-        font-family: 'Ubuntu', sans-serif;
-        background-color: #f8f9fa;
-        color: #191c1d;
-      }
     </style>
-</head>
-<body class="bg-surface text-on-surface">
-<!-- SideNavBar Component -->
-<aside class="h-screen w-64 fixed left-0 top-0 border-r border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col p-4 z-40">
-<div class="mb-10 px-2">
-<span class="text-lg font-black text-indigo-900 dark:text-white tracking-tighter uppercase">AZA</span>
-</div>
-<div class="flex items-center gap-3 px-2 mb-8">
-<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="Vendor profile picture smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDot_q7u_bWq4YrczyqY2i1H-tsx474HBSUt_uI89olrKSsofKsOeRnVNKwfuTxIY0od19ida4ci1T9-AuWJRkxWAqOq7JCoeZVJ_OFzMjYRFu7bytWN6HWmQy3UlWoodg7yYT9IA2fcmxG90L6r_wfh3VJUJc-Qx_0guGAPqXyhEDuRVfB3gz8G1wNVhO1hER6y7JatJzD_iI1l-bK1LHqobqKlj92D3CyP0BmLS_yCtJsLMil-YGyJpKbX-zwAkxiwHDQPX1FhEg"/>
-</div>
-<div>
-<p class="font-headline font-bold text-sm text-indigo-900 dark:text-white">Vendor Dashboard</p>
-<p class="text-xs text-slate-500 font-body">Manage your earnings</p>
-</div>
-</div>
-<nav class="flex-grow space-y-1">
-<!-- Active Tab: Overview -->
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 border-r-4 border-indigo-600 font-headline font-medium text-sm transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span>Overview</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 font-headline font-medium text-sm hover:pl-4 transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
-<span>Transactions</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 font-headline font-medium text-sm hover:pl-4 transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="record_voice_over">record_voice_over</span>
-<span>Voice Logs</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 font-headline font-medium text-sm hover:pl-4 transition-all duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span>Settings</span>
-</a>
-</nav>
-<button class="mt-auto w-full py-3 px-4 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-headline font-bold text-sm shadow-lg shadow-primary/20 transition-transform active:scale-95">
-            Withdraw Funds
-        </button>
-</aside>
-<!-- Main Content Canvas -->
-<main class="ml-64 min-h-screen p-8 lg:p-12">
-<!-- Top App Bar (Minimalist Inline) -->
-<header class="flex justify-between items-end mb-12">
-<div>
-<h1 class="font-headline font-black text-4xl tracking-tight text-primary leading-none mb-2">Morning, David</h1>
-<p class="font-body text-on-surface-variant">Here is what's happening at your store today.</p>
-</div>
-<div class="flex gap-4">
-<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low text-secondary font-headline font-bold text-sm rounded-lg hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="qr_code_2">qr_code_2</span>
-                    Download QR Code
-                </button>
-<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white font-headline font-bold text-sm rounded-lg shadow-xl shadow-primary/10 hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
-                    Copy Payment Link
-                </button>
-</div>
-</header>
-<!-- Bento Summary Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-<!-- Earnings Card -->
-<div class="md:col-span-2 bg-gradient-to-br from-primary to-primary-container p-8 rounded-xl relative overflow-hidden group">
-<div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
-<span class="material-symbols-outlined text-[120px]" data-icon="payments">payments</span>
-</div>
-<div class="relative z-10">
-<p class="font-label text-primary-fixed uppercase tracking-widest text-xs font-bold mb-4">Today’s Earnings</p>
-<h2 class="font-headline font-black text-6xl text-white tracking-tighter">₦12,500</h2>
-<div class="mt-6 inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/10">
-<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="trending_up">trending_up</span>
-<span class="text-white text-xs font-bold">+12% from yesterday</span>
-</div>
-</div>
-</div>
-<!-- Transactions Card -->
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border-b-4 border-secondary flex flex-col justify-between">
-<div>
-<p class="font-label text-on-surface-variant uppercase tracking-widest text-xs font-bold mb-4">Total Transactions</p>
-<h2 class="font-headline font-black text-6xl text-primary tracking-tighter">18</h2>
-</div>
-<button class="flex items-center justify-between w-full mt-8 group">
-<span class="font-headline font-bold text-secondary text-sm">View Analytics</span>
-<span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
-</button>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-<!-- Transaction List -->
-<div class="lg:col-span-2 space-y-6">
-<div class="flex items-center justify-between">
-<h3 class="font-headline font-bold text-xl text-primary">Recent Transactions</h3>
-<button class="text-secondary font-headline font-bold text-sm underline decoration-2 underline-offset-4">See All</button>
-</div>
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden">
-<table class="w-full border-collapse">
-<thead>
-<tr class="bg-surface-container-low text-left">
-<th class="px-6 py-4 font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider">Name</th>
-<th class="px-6 py-4 font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider">Amount</th>
-<th class="px-6 py-4 font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider">Time</th>
-<th class="px-6 py-4 font-label text-xs font-bold text-on-surface-variant uppercase tracking-wider text-right">Action</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container-low">
-<!-- David -->
-<tr class="hover:bg-surface-bright transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-xs">D</div>
-<span class="font-headline font-bold text-sm text-primary">David</span>
-</div>
-</td>
-<td class="px-6 py-5 font-headline font-bold text-sm text-primary">₦500</td>
-<td class="px-6 py-5 font-body text-sm text-on-surface-variant">1:05 PM</td>
-<td class="px-6 py-5 text-right">
-<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
-</td>
-</tr>
-<!-- Sarah -->
-<tr class="hover:bg-surface-bright transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center font-bold text-xs">S</div>
-<span class="font-headline font-bold text-sm text-primary">Sarah K.</span>
-</div>
-</td>
-<td class="px-6 py-5 font-headline font-bold text-sm text-primary">₦2,100</td>
-<td class="px-6 py-5 font-body text-sm text-on-surface-variant">12:48 PM</td>
-<td class="px-6 py-5 text-right">
-<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
-</td>
-</tr>
-<!-- Michael -->
-<tr class="hover:bg-surface-bright transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs">M</div>
-<span class="font-headline font-bold text-sm text-primary">Michael</span>
-</div>
-</td>
-<td class="px-6 py-5 font-headline font-bold text-sm text-primary">₦1,200</td>
-<td class="px-6 py-5 font-body text-sm text-on-surface-variant">12:30 PM</td>
-<td class="px-6 py-5 text-right">
-<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Quick Action -->
-<button class="w-full flex items-center justify-center gap-3 py-4 bg-surface-container-high rounded-xl font-headline font-black text-primary hover:bg-surface-container-highest transition-all active:scale-[0.98]">
-<span class="material-symbols-outlined" data-icon="replay">replay</span>
-                    Replay Last Payment Announcement
-                </button>
-</div>
-<!-- Voice Log Sidebar -->
-<div class="space-y-6">
-<div class="flex items-center justify-between">
-<h3 class="font-headline font-bold text-xl text-primary">Voice Log</h3>
-<span class="px-2 py-0.5 bg-secondary text-white text-[10px] font-black rounded uppercase">Live</span>
-</div>
-<div class="bg-surface-container-low rounded-xl p-6 space-y-8">
-<!-- Log Item 1 -->
-<div class="flex gap-4 relative">
-<div class="absolute left-4 top-10 bottom-[-32px] w-0.5 bg-outline-variant/30"></div>
-<div class="z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-secondary">
-<span class="material-symbols-outlined text-lg" data-icon="record_voice_over">record_voice_over</span>
-</div>
-<div class="flex-grow pt-1">
-<p class="font-headline font-bold text-sm text-primary leading-tight">₦500 received from David</p>
-<p class="font-body text-xs text-on-surface-variant mt-1">1:05 PM • Voice broadcast successful</p>
-</div>
-</div>
-<!-- Log Item 2 -->
-<div class="flex gap-4 relative">
-<div class="absolute left-4 top-10 bottom-[-32px] w-0.5 bg-outline-variant/30"></div>
-<div class="z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-secondary">
-<span class="material-symbols-outlined text-lg" data-icon="record_voice_over">record_voice_over</span>
-</div>
-<div class="flex-grow pt-1">
-<p class="font-headline font-bold text-sm text-primary leading-tight">₦2,100 received from Sarah K.</p>
-<p class="font-body text-xs text-on-surface-variant mt-1">12:48 PM • Voice broadcast successful</p>
-</div>
-</div>
-<!-- Log Item 3 -->
-<div class="flex gap-4">
-<div class="z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-secondary">
-<span class="material-symbols-outlined text-lg" data-icon="record_voice_over">record_voice_over</span>
-</div>
-<div class="flex-grow pt-1">
-<p class="font-headline font-bold text-sm text-primary leading-tight">₦1,200 received from Michael</p>
-<p class="font-body text-xs text-on-surface-variant mt-1">12:30 PM • Voice broadcast successful</p>
-</div>
-</div>
-</div>
-<!-- Credibility Tag -->
-<div class="pt-8 flex flex-col items-center">
-<p class="font-label text-[10px] text-outline uppercase tracking-widest font-bold">Powered by Interswitch</p>
-<div class="h-1 w-12 bg-secondary/20 rounded-full mt-2"></div>
-</div>
-</div>
-</div>
-</main>
-<!-- Footer Component (Suppressed as per task focused dashboard rules, but implemented for completeness if needed) -->
-<footer class="ml-64 bg-slate-50 dark:bg-slate-900 w-[calc(100%-16rem)] py-12 border-t border-slate-200 dark:border-slate-800">
-<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-<div>
-<span class="text-xl font-bold text-indigo-950 dark:text-white">AZA</span>
-<p class="font-body text-sm leading-relaxed text-slate-500 dark:text-slate-500 mt-2">© 2026 AZA. Powered by Interswitch</p>
-</div>
-<div class="flex gap-6 justify-end">
-<a class="text-slate-500 dark:text-slate-500 hover:text-indigo-500 transition-colors font-body text-sm" href="#">Privacy Policy</a>
-<a class="text-slate-500 dark:text-slate-500 hover:text-indigo-500 transition-colors font-body text-sm" href="#">Terms of Service</a>
-<a class="text-slate-500 dark:text-slate-500 hover:text-indigo-500 transition-colors font-body text-sm" href="#">Contact Support</a>
-</div>
-</div>
-</footer>
-</body></html>
+  </head>
+  <body class="page-shell bg-surface text-on-surface">
+    <aside class="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-slate-100 bg-white p-4">
+      <div class="mb-10 px-2">
+        <span class="text-lg font-black uppercase tracking-tighter text-indigo-900">AZA</span>
+      </div>
+      <div class="mb-8 flex items-center gap-3 px-2">
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-fixed text-primary">
+          <span class="material-symbols-outlined">storefront</span>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-indigo-900 font-headline">Vendor Dashboard</p>
+          <p class="text-xs text-slate-500 font-body">Manage your earnings</p>
+        </div>
+      </div>
+      <nav class="flex-grow space-y-1">
+        <a class="flex items-center gap-3 rounded-lg border-r-4 border-indigo-600 bg-indigo-50 px-3 py-3 text-sm font-medium text-indigo-700 font-headline" href="/dashboard.html">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Overview</span>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-500 transition-all duration-200 hover:bg-slate-50 hover:pl-4 font-headline" href="/signup.html">
+          <span class="material-symbols-outlined">person_add</span>
+          <span>Register Vendor</span>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-500 transition-all duration-200 hover:bg-slate-50 hover:pl-4 font-headline" href="/">
+          <span class="material-symbols-outlined">home</span>
+          <span>Landing Page</span>
+        </a>
+      </nav>
+      <button id="copy-payment-link" class="mt-auto w-full rounded-lg bg-gradient-to-br from-primary to-primary-container px-4 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 font-headline">
+        Copy Payment Link
+      </button>
+    </aside>
+
+    <main class="ml-64 min-h-screen p-8 lg:p-12">
+      <header class="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h1 id="vendor-name" class="mb-2 text-4xl font-black leading-none tracking-tight text-primary font-headline">Morning, Vendor</h1>
+          <p id="vendor-subtitle" class="text-on-surface-variant font-body">Your dashboard will update as customers pay through your merchant link.</p>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <button id="download-qr" class="flex items-center gap-2 rounded-lg bg-surface-container-low px-4 py-2 text-sm font-bold text-secondary font-headline transition-colors hover:bg-surface-container-high">
+            <span class="material-symbols-outlined text-lg">qr_code_2</span>
+            Download QR Code
+          </button>
+          <button id="open-payment-link" class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white shadow-xl shadow-primary/10 font-headline transition-opacity hover:opacity-90">
+            <span class="material-symbols-outlined text-lg">link</span>
+            Open Payment Link
+          </button>
+        </div>
+      </header>
+
+      <div class="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary-container p-8 group md:col-span-2">
+          <div class="absolute right-0 top-0 p-8 opacity-10 transition-transform duration-500 group-hover:scale-110">
+            <span class="material-symbols-outlined text-[120px] text-white">payments</span>
+          </div>
+          <div class="relative z-10">
+            <p class="mb-4 text-xs font-bold uppercase tracking-widest text-primary-fixed">Total Volume</p>
+            <h2 id="total-volume" class="text-6xl font-black tracking-tighter text-white font-headline">₦0.00</h2>
+            <div class="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 backdrop-blur-md">
+              <span class="material-symbols-outlined text-sm text-primary-fixed">trending_up</span>
+              <span class="text-xs font-bold text-white">Live merchant performance</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between rounded-xl border-b-4 border-secondary bg-surface-container-lowest p-8 shadow-sm">
+          <div>
+            <p class="mb-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Total Transactions</p>
+            <h2 id="total-transactions" class="text-6xl font-black tracking-tighter text-primary font-headline">0</h2>
+          </div>
+          <p class="mt-8 text-sm font-bold text-secondary font-headline">Average Ticket: <span id="average-ticket">₦0.00</span></p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
+        <div class="space-y-6 lg:col-span-2">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-bold text-primary font-headline">Recent Transactions</h3>
+            <span class="text-sm font-bold text-secondary font-headline">Live</span>
+          </div>
+          <div class="overflow-hidden rounded-xl bg-surface-container-lowest">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-surface-container-low text-left">
+                  <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Name</th>
+                  <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Amount</th>
+                  <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Time</th>
+                  <th class="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-on-surface-variant">Channel</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-body" class="divide-y divide-surface-container-low"></tbody>
+            </table>
+          </div>
+          <div id="empty-state" class="hidden rounded-xl bg-surface-container-high p-6 text-center text-on-surface-variant">
+            No payments yet. Share your payment link and QR code to start receiving money.
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="rounded-xl bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold text-primary font-headline">Payment Link</h3>
+              <span class="rounded bg-secondary px-2 py-0.5 text-[10px] font-black uppercase text-white">Share</span>
+            </div>
+            <p id="payment-link-output" class="mt-4 break-all text-sm leading-relaxed text-on-surface-variant"></p>
+          </div>
+          <div class="rounded-xl bg-surface-container-low p-6 text-center">
+            <img id="qr-image" class="mx-auto h-56 w-56 rounded-2xl bg-white p-3 shadow-sm" alt="Merchant QR code" />
+            <p class="mt-4 text-sm text-on-surface-variant">Customers can scan this QR or open your payment link directly.</p>
+          </div>
+          <div class="flex flex-col items-center pt-8">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Powered by Interswitch</p>
+            <div class="mt-2 h-1 w-12 rounded-full bg-secondary/20"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="/assets/js/dashboard.js"></script>
+  </body>
+</html>

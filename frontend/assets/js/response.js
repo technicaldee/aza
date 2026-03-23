@@ -1,4 +1,4 @@
-import { getRememberedTransaction, formatMinorAsNaira } from "./common.js";
+import { formatNaira } from "./common.js";
 
 const params = new URLSearchParams(window.location.search);
 const statusPill = document.querySelector("#result-pill");
@@ -12,7 +12,7 @@ const rrn = document.querySelector("#detail-rrn");
 const errorBox = document.querySelector("#error-box");
 
 const verified = params.get("verified") === "true";
-const amountValue = Number(params.get("amount") || getRememberedTransaction()?.amount || 0);
+const amountValue = Number(params.get("amount") || 0);
 
 statusPill.textContent = verified ? "Verified" : "Needs Attention";
 statusPill.className =
@@ -27,8 +27,8 @@ summary.textContent =
   params.get("error") ||
   "Use the transaction reference below if you want to requery again.";
 
-txnRef.textContent = params.get("txnref") || getRememberedTransaction()?.txnRef || "Unavailable";
-amount.textContent = amountValue ? formatMinorAsNaira(amountValue) : "Unavailable";
+txnRef.textContent = params.get("txnref") || "Unavailable";
+amount.textContent = amountValue ? formatNaira(amountValue) : "Unavailable";
 responseCode.textContent = params.get("responseCode") || params.get("redirectResponseCode") || "--";
 paymentReference.textContent = params.get("paymentReference") || "--";
 rrn.textContent = params.get("retrievalReferenceNumber") || "--";

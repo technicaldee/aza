@@ -1,80 +1,43 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>AZA Pay - Fast &amp; Secure Payments</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AZA Pay - Fast & Secure Payments</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <script>
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
             colors: {
-              "on-error-container": "#93000a",
-              "secondary-fixed-dim": "#adc7ff",
-              "primary-fixed-dim": "#ddb7ff",
-              "on-tertiary-fixed-variant": "#693c12",
-              "on-secondary": "#ffffff",
-              "inverse-primary": "#ddb7ff",
+              primary: "#2e0052",
               "primary-container": "#4b0082",
-              "secondary": "#0059bb",
-              "outline-variant": "#cec3d3",
-              "on-secondary-fixed": "#001a41",
-              "on-tertiary-fixed": "#2f1500",
-              "on-primary-fixed-variant": "#622599",
-              "tertiary-container": "#4f2700",
-              "tertiary-fixed-dim": "#fbb884",
-              "primary": "#2e0052",
-              "on-primary": "#ffffff",
-              "surface-container-highest": "#e1e3e4",
-              "on-secondary-fixed-variant": "#004493",
-              "on-surface-variant": "#4c4451",
-              "outline": "#7d7483",
-              "surface-variant": "#e1e3e4",
-              "tertiary-fixed": "#ffdcc3",
-              "on-primary-fixed": "#2c0050",
-              "on-tertiary-container": "#c98c5c",
-              "on-background": "#191c1d",
-              "inverse-on-surface": "#f0f1f2",
-              "surface": "#f8f9fa",
-              "surface-container-high": "#e7e8e9",
-              "on-error": "#ffffff",
-              "error-container": "#ffdad6",
-              "surface-dim": "#d9dadb",
-              "on-secondary-container": "#fefcff",
-              "surface-container": "#edeeef",
-              "on-surface": "#191c1d",
-              "on-tertiary": "#ffffff",
-              "surface-bright": "#f8f9fa",
+              secondary: "#0059bb",
               "secondary-container": "#0070ea",
-              "surface-container-low": "#f3f4f5",
               "primary-fixed": "#f0dbff",
-              "background": "#f8f9fa",
-              "inverse-surface": "#2e3132",
-              "surface-tint": "#7b41b3",
               "secondary-fixed": "#d8e2ff",
-              "on-primary-container": "#ba7ef4",
+              "surface-container-low": "#f3f4f5",
               "surface-container-lowest": "#ffffff",
-              "error": "#ba1a1a",
-              "tertiary": "#301600"
+              "surface-container-high": "#e7e8e9",
+              outline: "#7d7483",
+              "outline-variant": "#cec3d3",
+              "on-surface": "#191c1d"
             },
             fontFamily: {
-              "headline": ["Ubuntu", "sans-serif"],
-              "body": ["Ubuntu", "sans-serif"],
-              "label": ["Ubuntu", "sans-serif"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
-        },
-      }
+              headline: ["Ubuntu", "sans-serif"],
+              body: ["Ubuntu", "sans-serif"]
+            }
+          }
+        }
+      };
     </script>
-<style>
+    <style>
       .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
       }
       .glass-effect {
         background: rgba(255, 255, 255, 0.8);
@@ -82,182 +45,166 @@
         -webkit-backdrop-filter: blur(20px);
       }
     </style>
-</head>
-<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col">
-<!-- TopNavBar (Immutable Content & Injected Styles) -->
-<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-sm">
-<div class="flex justify-between items-center px-8 h-20 max-w-7xl mx-auto">
-<div class="text-2xl font-black text-indigo-950 dark:text-white tracking-tighter font-headline">AZA</div>
-<!-- Desktop Links (Hidden on Mobile) -->
-<div class="hidden md:flex items-center space-gap-8 gap-x-8">
-<a class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 transition-colors font-headline font-bold tracking-tight" href="#">How it Works</a>
-<a class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 transition-colors font-headline font-bold tracking-tight" href="#">Features</a>
-<a class="text-slate-600 dark:text-slate-400 hover:text-indigo-600 transition-colors font-headline font-bold tracking-tight" href="#">Payments</a>
-<a class="text-indigo-700 dark:text-indigo-300 border-b-2 border-indigo-600 pb-1 font-headline font-bold tracking-tight" href="#">Dashboard</a>
-</div>
-<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2.5 rounded shadow-lg shadow-primary/20 font-bold hover:opacity-80 transition-all duration-300 active:scale-95">
-                Get Started
+  </head>
+  <body class="bg-surface text-on-surface font-body min-h-screen flex flex-col">
+    <nav class="fixed top-0 z-50 w-full bg-white/80 shadow-sm backdrop-blur-xl">
+      <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
+        <div class="text-2xl font-black tracking-tighter text-indigo-950 font-headline">AZA</div>
+        <a class="rounded bg-gradient-to-br from-primary to-primary-container px-6 py-2.5 font-bold text-white shadow-lg shadow-primary/20 transition-all duration-300 hover:opacity-80" href="/signup.html">
+          Become a Vendor
+        </a>
+      </div>
+    </nav>
+
+    <main id="pay-shell" class="flex flex-grow flex-col items-center px-4 pb-12 pt-28">
+      <div class="w-full max-w-md space-y-8">
+        <div id="error-card" class="hidden rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700"></div>
+
+        <section class="flex flex-col items-center space-y-4 rounded-xl bg-surface-container-low p-6 text-center">
+          <div class="relative">
+            <div class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-primary-fixed text-primary">
+              <span class="material-symbols-outlined text-4xl">storefront</span>
+            </div>
+            <div class="absolute -bottom-1 -right-1 rounded-full border-4 border-surface-container-low bg-secondary p-1 text-white">
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1">verified</span>
+            </div>
+          </div>
+          <div>
+            <h2 id="merchant-name" class="text-xl font-bold tracking-tight text-on-surface font-headline">Loading merchant...</h2>
+            <div class="mt-1 flex items-center justify-center gap-1 text-sm font-medium text-secondary">
+              <span class="material-symbols-outlined text-base">location_on</span>
+              <span id="merchant-location">Fetching location</span>
+            </div>
+            <p id="merchant-category" class="mt-2 text-sm text-slate-500"></p>
+          </div>
+        </section>
+
+        <section class="rounded-xl border border-outline-variant/15 bg-surface-container-lowest p-8 shadow-sm">
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <label class="text-sm font-bold uppercase tracking-widest text-outline font-headline">Enter Amount</label>
+              <div class="flex items-center gap-3 rounded-lg bg-surface-container-high p-4">
+                <span class="text-2xl font-black text-primary">₦</span>
+                <input id="amount-input" class="w-full border-none bg-transparent p-0 text-3xl font-black text-on-surface focus:ring-0" placeholder="0.00" type="number" value="500" />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-bold uppercase tracking-widest text-outline font-headline">Your Name</label>
+              <input id="payer-name" class="w-full rounded-lg border border-outline-variant/30 bg-white px-4 py-4 font-semibold text-on-surface focus:border-primary focus:ring-primary/20" placeholder="Customer name" type="text" />
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-bold uppercase tracking-widest text-outline font-headline">Payment Note</label>
+              <input id="payment-note" class="w-full rounded-lg border border-outline-variant/30 bg-white px-4 py-4 font-semibold text-on-surface focus:border-primary focus:ring-primary/20" placeholder="Optional note" type="text" />
+            </div>
+
+            <div class="space-y-3">
+              <p class="text-xs font-bold text-outline font-headline">Select Payment Method</p>
+              <button class="pay-method flex w-full items-center justify-between rounded-lg bg-surface p-4 transition-colors group hover:bg-surface-container-high" data-method="TRANSFER">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary-fixed text-secondary">
+                    <span class="material-symbols-outlined">account_balance</span>
+                  </div>
+                  <span class="font-semibold text-on-surface">Pay with Bank Transfer</span>
+                </div>
+                <span class="material-symbols-outlined text-outline transition-transform group-hover:translate-x-1">chevron_right</span>
+              </button>
+              <button class="pay-method flex w-full items-center justify-between rounded-lg bg-surface p-4 transition-colors group hover:bg-surface-container-high" data-method="USSD">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-fixed text-primary">
+                    <span class="material-symbols-outlined">dialpad</span>
+                  </div>
+                  <span class="font-semibold text-on-surface">Pay with USSD</span>
+                </div>
+                <span class="material-symbols-outlined text-outline transition-transform group-hover:translate-x-1">chevron_right</span>
+              </button>
+              <button class="pay-method flex w-full items-center justify-between rounded-lg bg-surface p-4 transition-colors group hover:bg-surface-container-high" data-method="CARD">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-fixed text-primary">
+                    <span class="material-symbols-outlined">credit_card</span>
+                  </div>
+                  <span class="font-semibold text-on-surface">Pay with Card</span>
+                </div>
+                <span class="material-symbols-outlined text-outline transition-transform group-hover:translate-x-1">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="relative overflow-hidden rounded-xl bg-primary p-8 text-white">
+          <div class="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-primary-container opacity-50"></div>
+          <div class="relative z-10 space-y-6">
+            <div class="space-y-4">
+              <h3 class="text-lg font-bold font-headline">Bank Transfer Details</h3>
+              <div class="space-y-4">
+                <div class="flex items-end justify-between border-b border-white/10 pb-2">
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white/60">Bank Name</p>
+                    <p id="bank-name" class="text-lg font-semibold">--</p>
+                  </div>
+                </div>
+                <div class="flex items-end justify-between border-b border-white/10 pb-2">
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white/60">Account Number</p>
+                    <p id="account-number" class="text-2xl font-black tracking-tight">--</p>
+                  </div>
+                  <button id="copy-account-number" class="material-symbols-outlined text-white/50">content_copy</button>
+                </div>
+                <div class="flex items-end justify-between">
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white/60">Account Name</p>
+                    <p id="account-name" class="font-semibold">--</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button id="submit-payment" class="w-full rounded-lg bg-secondary-container py-4 text-lg font-black text-white shadow-xl transition-all active:scale-[0.98]">
+              I’ve Made Payment
             </button>
-</div>
-</nav>
-<main class="flex-grow pt-28 pb-12 px-4 flex flex-col items-center">
-<div class="max-w-md w-full space-y-8">
-<!-- Vendor Identity Section -->
-<section class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center space-y-4">
-<div class="relative">
-<div class="w-20 h-20 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
-<img alt="Musa profile" class="w-full h-full object-cover" data-alt="Friendly male portrait representing vendor Musa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtnHrhqv4v9oF3f4L_cYuusH9KSIoYT_yTPJGyKSoGacLvC-KnYmE9WKRSMDe-EI5-lT9xdsPU8bn15mDrWp_kr36AMYjPxuYOw5Hx1wk7PRFvPVGCvUlNvuXEhgoNWHs1vze6iFD3YMuJicz1uc9QoUg2To_J4o7DVq0Xzfv4TveC63cmdD-vA3Om6g-i4psigd-9OuODAYoGiQNbDusFA_ysIdG4BZ3b2JdY9LG901HOkFWSPOC16ZNcvCOXxj4U8m_LLgYplCg"/>
-</div>
-<div class="absolute -bottom-1 -right-1 bg-secondary text-white rounded-full p-1 border-4 border-surface-container-low">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
-</div>
-</div>
-<div>
-<h2 class="font-headline font-bold text-xl tracking-tight text-on-surface">You are paying: Musa (Keke Rider)</h2>
-<div class="flex items-center justify-center gap-1 text-secondary font-medium text-sm mt-1">
-<span class="material-symbols-outlined text-base">location_on</span>
-<span>Uyo Plaza</span>
-</div>
-</div>
-</section>
-<!-- Payment Input Section (Asymmetric Editorial Style) -->
-<section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/15">
-<div class="space-y-6">
-<div class="space-y-2">
-<label class="font-headline font-bold text-sm tracking-widest uppercase text-outline">ENTER AMOUNT</label>
-<div class="flex items-center gap-3 bg-surface-container-high p-4 rounded-lg focus-within:ring-2 focus-within:ring-primary/20 transition-all">
-<span class="text-2xl font-black text-primary">₦</span>
-<input class="bg-transparent border-none focus:ring-0 text-3xl font-black text-on-surface w-full p-0" placeholder="0.00" type="number" value="500"/>
-</div>
-</div>
-<!-- Payment Options -->
-<div class="space-y-3">
-<p class="font-label text-xs font-bold text-outline">SELECT PAYMENT METHOD</p>
-<button class="w-full flex items-center justify-between p-4 rounded-lg bg-surface hover:bg-surface-container-high transition-colors group">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined">account_balance</span>
-</div>
-<span class="font-semibold text-on-surface">Pay with Bank Transfer</span>
-</div>
-<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
-</button>
-<button class="w-full flex items-center justify-between p-4 rounded-lg bg-surface hover:bg-surface-container-high transition-colors group border-2 border-primary/10">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">dialpad</span>
-</div>
-<span class="font-semibold text-on-surface">Pay with USSD</span>
-</div>
-<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
-</button>
-<button class="w-full flex items-center justify-between p-4 rounded-lg bg-surface hover:bg-surface-container-high transition-colors group">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined">credit_card</span>
-</div>
-<span class="font-semibold text-on-surface">Pay with Card</span>
-</div>
-<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
-</button>
-</div>
-</div>
-</section>
-<!-- Transfer Details Section (Visualizing the Flow) -->
-<section class="bg-primary text-on-primary p-8 rounded-xl space-y-6 relative overflow-hidden">
-<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container rounded-full -mr-16 -mt-16 opacity-50"></div>
-<div class="space-y-4 relative z-10">
-<h3 class="font-headline font-bold text-lg">Bank Transfer Details</h3>
-<div class="space-y-4">
-<div class="flex justify-between items-end border-b border-on-primary/10 pb-2">
-<div>
-<p class="text-on-primary/60 text-xs font-bold uppercase tracking-widest">Bank Name</p>
-<p class="font-semibold text-lg">AZA Microfinance / Wema</p>
-</div>
-<span class="material-symbols-outlined text-on-primary/40">content_copy</span>
-</div>
-<div class="flex justify-between items-end border-b border-on-primary/10 pb-2">
-<div>
-<p class="text-on-primary/60 text-xs font-bold uppercase tracking-widest">Account Number</p>
-<p class="font-black text-2xl tracking-tight">0123456789</p>
-</div>
-<span class="material-symbols-outlined text-on-primary/40">content_copy</span>
-</div>
-<div class="flex justify-between items-end">
-<div>
-<p class="text-on-primary/60 text-xs font-bold uppercase tracking-widest">Account Name</p>
-<p class="font-semibold">AZA - MUSA ABBA</p>
-</div>
-</div>
-</div>
-</div>
-<button class="w-full bg-secondary-container text-on-secondary-container py-4 rounded-lg font-black text-lg shadow-xl active:scale-[0.98] transition-all">
-                    I’ve Made Payment
-                </button>
-<p class="text-center text-on-primary/70 text-sm flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">campaign</span>
-                    This vendor will receive instant voice confirmation.
-                </p>
-</section>
-<!-- Loading State Mockup (Tonal Layering) -->
-<div class="flex items-center justify-center gap-3 p-4 bg-surface-container rounded-full text-secondary font-bold">
-<span class="material-symbols-outlined animate-spin">refresh</span>
-<span>Confirming payment…</span>
-</div>
-<!-- Success Card (Bento-inspired Detail View) -->
-<div class="grid grid-cols-2 gap-4">
-<div class="col-span-2 bg-green-50 p-8 rounded-2xl flex flex-col items-center text-center space-y-4 border border-green-100">
-<div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-green-200">
-<span class="material-symbols-outlined text-3xl font-bold">check</span>
-</div>
-<div>
-<h3 class="font-headline font-black text-2xl text-green-900 tracking-tighter">Payment Successful</h3>
-<p class="text-green-700 font-medium">₦500.00 sent to Musa</p>
-</div>
-</div>
-<div class="bg-white p-4 rounded-xl border border-outline-variant/15 flex flex-col items-center">
-<p class="text-outline text-[10px] font-bold uppercase tracking-widest">TIME</p>
-<p class="font-bold text-on-surface">14:32 PM</p>
-</div>
-<div class="bg-white p-4 rounded-xl border border-outline-variant/15 flex flex-col items-center">
-<p class="text-outline text-[10px] font-bold uppercase tracking-widest">METHOD</p>
-<p class="font-bold text-on-surface">Transfer</p>
-</div>
-</div>
-</div>
-</main>
-<!-- Footer Component (Mandatory Branding) -->
-<footer class="w-full py-12 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-<div class="space-y-4">
-<div class="text-xl font-bold text-indigo-950 dark:text-white font-headline">AZA</div>
-<p class="text-slate-500 dark:text-slate-500 font-body text-sm leading-relaxed">© 2026 AZA. Powered by Interswitch</p>
-</div>
-<div class="flex flex-wrap gap-6 md:justify-end">
-<a class="text-slate-500 dark:text-slate-500 hover:text-indigo-500 transition-colors font-label text-sm" href="#">Privacy Policy</a>
-<a class="text-slate-500 dark:text-slate-500 hover:text-indigo-500 transition-colors font-label text-sm" href="#">Terms of Service</a>
-<a class="text-slate-500 dark:text-slate-500 hover:text-indigo-500 transition-colors font-label text-sm" href="#">Contact Support</a>
-<a class="text-slate-500 dark:text-slate-500 hover:text-indigo-500 transition-colors font-label text-sm" href="#">Developer API</a>
-</div>
-</div>
-</footer>
-<!-- Bottom Navigation Shell (Mobile Only) -->
-<div class="md:hidden fixed bottom-0 left-0 w-full glass-effect shadow-[0_-4px_20px_rgba(0,0,0,0.05)] px-6 py-4 flex justify-between items-center z-50">
-<button class="flex flex-col items-center text-slate-400">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="text-[10px] font-bold mt-1">Overview</span>
-</button>
-<button class="flex flex-col items-center text-indigo-700">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
-<span class="text-[10px] font-bold mt-1">Pay</span>
-</button>
-<button class="flex flex-col items-center text-slate-400">
-<span class="material-symbols-outlined">record_voice_over</span>
-<span class="text-[10px] font-bold mt-1">Logs</span>
-</button>
-<button class="flex flex-col items-center text-slate-400">
-<span class="material-symbols-outlined">settings</span>
-<span class="text-[10px] font-bold mt-1">Settings</span>
-</button>
-</div>
-</body></html>
+            <p class="flex items-center justify-center gap-2 text-center text-sm text-white/70">
+              <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1">campaign</span>
+              This payment will be reflected in the vendor dashboard immediately.
+            </p>
+          </div>
+        </section>
+
+        <section id="success-card" class="hidden grid grid-cols-2 gap-4">
+          <div class="col-span-2 flex flex-col items-center space-y-4 rounded-2xl border border-green-100 bg-green-50 p-8 text-center">
+            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-lg shadow-green-200">
+              <span class="material-symbols-outlined text-3xl font-bold">check</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-black tracking-tighter text-green-900 font-headline">Payment Recorded</h3>
+              <p id="success-amount" class="font-medium text-green-700">₦0.00</p>
+            </div>
+          </div>
+          <div class="flex flex-col items-center rounded-xl border border-outline-variant/15 bg-white p-4">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Time</p>
+            <p id="success-time" class="font-bold text-on-surface">--</p>
+          </div>
+          <div class="flex flex-col items-center rounded-xl border border-outline-variant/15 bg-white p-4">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Method</p>
+            <p id="success-method" class="font-bold text-on-surface">--</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="w-full border-t border-slate-200 bg-slate-50 py-12">
+      <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-8 md:grid-cols-2">
+        <div class="space-y-4">
+          <div class="text-xl font-bold text-indigo-950 font-headline">AZA</div>
+          <p class="text-sm leading-relaxed text-slate-500">© 2026 AZA. Powered by Interswitch</p>
+        </div>
+        <div class="flex flex-wrap gap-6 md:justify-end">
+          <a class="text-sm text-slate-500 transition-colors hover:text-indigo-500" href="/">Home</a>
+          <a class="text-sm text-slate-500 transition-colors hover:text-indigo-500" href="/signup.html">Become a Vendor</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/assets/js/pay.js"></script>
+  </body>
+</html>

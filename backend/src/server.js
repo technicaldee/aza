@@ -3,6 +3,8 @@ import express from "express";
 import morgan from "morgan";
 import { config } from "./config.js";
 import configRouter from "./routes/config.js";
+import paymentsRouter from "./routes/payments.js";
+import vendorsRouter from "./routes/vendors.js";
 import nonCardRouter from "./routes/non-card.js";
 import transactionsRouter from "./routes/transactions.js";
 import webhookRouter from "./routes/webhooks.js";
@@ -33,6 +35,8 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/config", configRouter);
 app.use("/api/auth", configRouter);
+app.use("/api/vendors", vendorsRouter);
+app.use("/api/payments", paymentsRouter);
 app.use("/api", transactionsRouter);
 app.use("/api", nonCardRouter);
 app.use("/api/webhooks", webhookRouter);

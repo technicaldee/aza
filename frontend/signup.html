@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AZA Vendor Signup</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2e0052",
+              "primary-container": "#4b0082",
+              secondary: "#0059bb",
+              "primary-fixed": "#f0dbff",
+              "surface-container-low": "#f3f4f5",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#e7e8e9",
+              outline: "#7d7483",
+              "outline-variant": "#cec3d3",
+              "on-surface": "#191c1d",
+              "on-surface-variant": "#4c4451"
+            },
+            fontFamily: {
+              headline: ["Ubuntu", "sans-serif"],
+              body: ["Ubuntu", "sans-serif"]
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="page-shell bg-surface text-on-surface font-body">
+    <main class="mx-auto grid min-h-screen max-w-7xl grid-cols-1 gap-10 px-4 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+      <section class="hero-gradient flex flex-col justify-between rounded-[2rem] p-10 text-white">
+        <div>
+          <a class="text-2xl font-black tracking-tighter font-headline" href="/">AZA</a>
+          <h1 class="mt-12 text-5xl font-black leading-tight tracking-tighter font-headline">
+            Set up your merchant profile and start collecting payments.
+          </h1>
+          <p class="mt-6 max-w-xl text-lg text-on-primary-container">
+            Once you register, AZA generates your merchant payment page, shareable link, and dashboard automatically.
+          </p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3">
+          <div class="rounded-2xl bg-white/10 p-4">
+            <p class="text-sm font-bold uppercase tracking-widest text-primary-fixed">Live Dashboard</p>
+            <p class="mt-2 text-sm">Track every payment and merchant activity in one place.</p>
+          </div>
+          <div class="rounded-2xl bg-white/10 p-4">
+            <p class="text-sm font-bold uppercase tracking-widest text-primary-fixed">Payment Link</p>
+            <p class="mt-2 text-sm">Share a clean pay page by QR or direct link.</p>
+          </div>
+          <div class="rounded-2xl bg-white/10 p-4">
+            <p class="text-sm font-bold uppercase tracking-widest text-primary-fixed">Transfer Ready</p>
+            <p class="mt-2 text-sm">Show your settlement details clearly to customers.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-200/70 lg:p-10">
+        <div class="mb-8">
+          <p class="text-sm font-bold uppercase tracking-widest text-secondary">Vendor Signup</p>
+          <h2 class="mt-3 text-3xl font-black tracking-tight text-primary font-headline">Create your merchant account</h2>
+          <p class="mt-2 text-on-surface-variant">Fill in the details your customers will see and the account you want them to pay into.</p>
+        </div>
+
+        <form id="signup-form" class="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Full Name</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="fullName" placeholder="Musa Abba" required type="text" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Business Name</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="businessName" placeholder="Musa Keke Services" required type="text" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Email</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="email" placeholder="musa@example.com" required type="email" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Phone Number</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="phone" placeholder="+234..." required type="tel" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Business Location</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="location" placeholder="Uyo Plaza" required type="text" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Category</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="category" placeholder="Keke Rider, Store, Restaurant..." required type="text" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Bank Name</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="bankName" placeholder="Wema Bank" required type="text" />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Account Number</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="accountNumber" placeholder="0123456789" required type="text" />
+          </label>
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Account Name</span>
+            <input class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="accountName" placeholder="AZA - MUSA ABBA" required type="text" />
+          </label>
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-bold text-on-surface-variant">Voice Confirmation Language</span>
+            <select class="w-full rounded-xl border border-outline-variant/30 px-4 py-4 font-semibold focus:border-primary focus:ring-primary/20" name="voiceLanguage">
+              <option value="English">English</option>
+              <option value="Pidgin">Pidgin</option>
+              <option value="Ibibio">Ibibio</option>
+              <option value="Yoruba">Yoruba</option>
+              <option value="Hausa">Hausa</option>
+            </select>
+          </label>
+
+          <div class="md:col-span-2 flex flex-col gap-4 pt-4 sm:flex-row">
+            <button id="signup-submit" class="rounded-xl bg-primary px-8 py-4 text-lg font-bold text-white shadow-lg shadow-primary/20" type="submit">
+              Create Vendor Account
+            </button>
+            <a class="rounded-xl bg-surface-container-high px-8 py-4 text-center text-lg font-bold text-primary" href="/">
+              Back Home
+            </a>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="/assets/js/signup.js"></script>
+  </body>
+</html>

@@ -27,35 +27,23 @@ export function getPublicConfig() {
   return apiRequest("/config/public");
 }
 
-export function createAccessToken() {
-  return apiRequest("/auth/token", {
-    method: "POST"
-  });
-}
-
-export function requeryTransaction(payload) {
-  return apiRequest("/transactions/requery", {
+export function registerVendor(payload) {
+  return apiRequest("/vendors", {
     method: "POST",
     body: JSON.stringify(payload)
   });
 }
 
-export function initializeWallet(payload) {
-  return apiRequest("/wallet/initialize", {
-    method: "POST",
-    body: JSON.stringify(payload)
-  });
+export function getVendorDashboard(vendorId) {
+  return apiRequest(`/vendors/${vendorId}/dashboard`);
 }
 
-export function getWalletStatus(payload) {
-  return apiRequest("/wallet/status", {
-    method: "POST",
-    body: JSON.stringify(payload)
-  });
+export function getPublicMerchant(slug) {
+  return apiRequest(`/vendors/public/${slug}`);
 }
 
-export function createVirtualAccount(payload) {
-  return apiRequest("/virtual-accounts", {
+export function createPayment(payload) {
+  return apiRequest("/payments", {
     method: "POST",
     body: JSON.stringify(payload)
   });
