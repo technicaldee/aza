@@ -37,9 +37,14 @@ function mapPayment(row) {
     id: row.id,
     vendorId: row.vendor_id,
     merchantSlug: row.merchant_slug,
+    transactionRef: row.transaction_ref,
+    paymentReference: row.payment_reference,
+    retrievalReferenceNumber: row.retrieval_reference_number,
     payerName: row.payer_name,
     amount: Number(row.amount),
     channel: row.channel,
+    providerResponseCode: row.provider_response_code,
+    providerResponseDescription: row.provider_response_description,
     status: row.status,
     note: row.note,
     createdAt: row.created_at
@@ -130,24 +135,39 @@ export async function createPayment(payload) {
   const result = await query(
     `
       INSERT INTO payments (
-        id, vendor_id, merchant_slug, payer_name, amount, channel, status, note
+        id, vendor_id, merchant_slug, transaction_ref, payment_reference,
+        retrieval_reference_number, payer_name, amount, channel,
+        provider_response_code, provider_response_description, status, note
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
       RETURNING *
     `,
     [
       crypto.randomUUID(),
       payload.vendorId,
       payload.merchantSlug,
+      payload.transactionRef || null,
+      payload.paymentReference || null,
+      payload.retrievalReferenceNumber || null,
       payload.payerName || "Customer",
       Number(payload.amount),
       payload.channel,
+      payload.providerResponseCode || null,
+      payload.providerResponseDescription || null,
       payload.status || "COMPLETED",
       payload.note || ""
     ]
   );
 
   return mapPayment(result.rows[0]);
+}
+
+export async function getPaymentByTransactionRef(transactionRef) {
+  const result = await query(
+    "SELECT * FROM payments WHERE transaction_ref = $1 LIMIT 1",
+    [transactionRef]
+  );
+  return result.rows[0] ? mapPayment(result.rows[0]) : null;
 }
 
 export async function getDashboard(vendorId) {

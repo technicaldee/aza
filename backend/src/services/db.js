@@ -41,13 +41,43 @@ export async function initDb() {
       id UUID PRIMARY KEY,
       vendor_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
       merchant_slug TEXT NOT NULL,
+      transaction_ref TEXT UNIQUE,
+      payment_reference TEXT,
+      retrieval_reference_number TEXT,
       payer_name TEXT NOT NULL,
       amount NUMERIC(12,2) NOT NULL,
       channel TEXT NOT NULL,
+      provider_response_code TEXT,
+      provider_response_description TEXT,
       status TEXT NOT NULL DEFAULT 'COMPLETED',
       note TEXT NOT NULL DEFAULT '',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+  `);
+
+  await query(`
+    ALTER TABLE payments
+    ADD COLUMN IF NOT EXISTS transaction_ref TEXT UNIQUE;
+  `);
+
+  await query(`
+    ALTER TABLE payments
+    ADD COLUMN IF NOT EXISTS payment_reference TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE payments
+    ADD COLUMN IF NOT EXISTS retrieval_reference_number TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE payments
+    ADD COLUMN IF NOT EXISTS provider_response_code TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE payments
+    ADD COLUMN IF NOT EXISTS provider_response_description TEXT;
   `);
 
   await query(`

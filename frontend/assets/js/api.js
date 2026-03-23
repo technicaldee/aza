@@ -48,3 +48,10 @@ export function createPayment(payload) {
     body: JSON.stringify(payload)
   });
 }
+
+export function verifyInlinePayment(payload) {
+  return apiRequest("/payments/verify-inline", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}

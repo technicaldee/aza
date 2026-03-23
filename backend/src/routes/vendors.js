@@ -53,9 +53,6 @@ router.get("/public/:slug", async (req, res, next) => {
       businessName: vendor.businessName,
       location: vendor.location,
       category: vendor.category,
-      bankName: vendor.bankName,
-      accountNumber: vendor.accountNumber,
-      accountName: vendor.accountName,
       voiceLanguage: vendor.voiceLanguage
     });
   } catch (error) {

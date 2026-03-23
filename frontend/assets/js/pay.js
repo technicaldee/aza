@@ -1,34 +1,31 @@
-import { createPayment, getPublicMerchant } from "./api.js";
-import { copyToClipboard, formatDateTime, formatNaira, showToast } from "./common.js";
+import { getPublicConfig, getPublicMerchant, verifyInlinePayment } from "./api.js";
+import {
+  formatDateTime,
+  formatNaira,
+  generateTransactionReference,
+  loadExternalScript,
+  nairaToMinor,
+  showToast
+} from "./common.js";
 
 const merchantName = document.querySelector("#merchant-name");
 const merchantLocation = document.querySelector("#merchant-location");
 const merchantCategory = document.querySelector("#merchant-category");
 const amountInput = document.querySelector("#amount-input");
 const payerNameInput = document.querySelector("#payer-name");
+const payerEmailInput = document.querySelector("#payer-email");
 const noteInput = document.querySelector("#payment-note");
-const bankName = document.querySelector("#bank-name");
-const accountNumber = document.querySelector("#account-number");
-const accountName = document.querySelector("#account-name");
-const copyAccountButton = document.querySelector("#copy-account-number");
 const submitButton = document.querySelector("#submit-payment");
-const methodButtons = document.querySelectorAll(".pay-method");
 const successCard = document.querySelector("#success-card");
 const successAmount = document.querySelector("#success-amount");
 const successTime = document.querySelector("#success-time");
 const successMethod = document.querySelector("#success-method");
 const errorCard = document.querySelector("#error-card");
 const pageBody = document.querySelector("#pay-shell");
+const quicktellerStatus = document.querySelector("#quickteller-status");
 
 let merchant = null;
-let selectedMethod = "TRANSFER";
-
-function setMethod(method) {
-  selectedMethod = method;
-  methodButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.method === method);
-  });
-}
+let publicConfig = null;
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
@@ -43,13 +40,24 @@ async function init() {
   }
 
   try {
-    merchant = await getPublicMerchant(slug);
+    const [merchantData, config] = await Promise.all([
+      getPublicMerchant(slug),
+      getPublicConfig()
+    ]);
+
+    merchant = merchantData;
+    publicConfig = config;
+
     merchantName.textContent = merchant.businessName;
     merchantLocation.textContent = merchant.location;
     merchantCategory.textContent = merchant.category;
-    bankName.textContent = merchant.bankName;
-    accountNumber.textContent = merchant.accountNumber;
-    accountName.textContent = merchant.accountName;
+    quicktellerStatus.textContent = config.checkoutReady
+      ? "Secure Quickteller inline checkout is ready."
+      : "Quickteller configuration is incomplete.";
+
+    if (!config.checkoutReady) {
+      submitButton.disabled = true;
+    }
   } catch (error) {
     errorCard.classList.remove("hidden");
     errorCard.textContent = error.message;
@@ -58,19 +66,12 @@ async function init() {
   }
 }
 
-copyAccountButton?.addEventListener("click", async () => {
-  await copyToClipboard(accountNumber.textContent.trim());
-  showToast("Account number copied.", "success");
-});
-
-methodButtons.forEach((button) => {
-  button.addEventListener("click", () => setMethod(button.dataset.method));
-});
-
-submitButton?.addEventListener("click", async () => {
+async function openQuicktellerInline() {
   const amount = Number(amountInput.value || 0);
+  const amountMinor = nairaToMinor(amount);
+  const payerEmail = payerEmailInput.value.trim();
 
-  if (!merchant) {
+  if (!merchant || !publicConfig) {
     showToast("Merchant is not loaded yet.", "warn");
     return;
   }
@@ -80,30 +81,62 @@ submitButton?.addEventListener("click", async () => {
     return;
   }
 
+  if (!payerEmail) {
+    showToast("Customer email is required.", "warn");
+    return;
+  }
+
   submitButton.disabled = true;
-  submitButton.textContent = "Confirming...";
+  submitButton.textContent = "Opening checkout...";
 
   try {
-    const result = await createPayment({
-      merchantSlug: merchant.slug,
-      amount,
-      channel: selectedMethod,
-      payerName: payerNameInput.value.trim() || "Customer",
-      note: noteInput.value.trim()
-    });
+    await loadExternalScript(publicConfig.checkoutScriptUrl);
 
-    successCard.classList.remove("hidden");
-    successAmount.textContent = formatNaira(result.payment.amount);
-    successTime.textContent = formatDateTime(result.payment.createdAt);
-    successMethod.textContent = selectedMethod;
-    showToast("Payment recorded successfully.", "success");
+    const txnRef = generateTransactionReference("aza_qt");
+
+    window.webpayCheckout({
+      merchant_code: publicConfig.merchantCode,
+      pay_item_id: publicConfig.payItemId,
+      pay_item_name: `${merchant.businessName} Payment`,
+      txn_ref: txnRef,
+      amount: amountMinor,
+      currency: Number(publicConfig.currency),
+      cust_name: payerNameInput.value.trim() || "Customer",
+      cust_email: payerEmail,
+      site_redirect_url: publicConfig.siteRedirectUrl,
+      mode: publicConfig.mode,
+      onComplete: async () => {
+        submitButton.textContent = "Verifying payment...";
+
+        try {
+          const result = await verifyInlinePayment({
+            merchantSlug: merchant.slug,
+            txnRef,
+            amountMinor,
+            payerName: payerNameInput.value.trim() || "Customer",
+            note: noteInput.value.trim()
+          });
+
+          successCard.classList.remove("hidden");
+          successAmount.textContent = formatNaira(result.payment.amount);
+          successTime.textContent = formatDateTime(result.payment.createdAt);
+          successMethod.textContent = "Quickteller Inline";
+          showToast("Payment verified and recorded.", "success");
+        } catch (error) {
+          showToast(error.message, "error");
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Pay Securely with Quickteller";
+        }
+      }
+    });
   } catch (error) {
     showToast(error.message, "error");
-  } finally {
     submitButton.disabled = false;
-    submitButton.textContent = "I’ve Made Payment";
+    submitButton.textContent = "Pay Securely with Quickteller";
   }
-});
+}
 
-setMethod(selectedMethod);
+submitButton?.addEventListener("click", openQuicktellerInline);
+
 init();

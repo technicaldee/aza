@@ -17,6 +17,10 @@ export function generateTransactionReference(prefix = "aza") {
   return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
+export function nairaToMinor(amount) {
+  return Math.round(Number(amount || 0) * 100);
+}
+
 export function formatNaira(amount) {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -54,4 +58,22 @@ export function buildMerchantLink(slug) {
 
 export function buildQrUrl(text) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(text)}`;
+}
+
+export async function loadExternalScript(src) {
+  const existing = document.querySelector(`script[data-src="${src}"]`);
+
+  if (existing) {
+    return;
+  }
+
+  await new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.dataset.src = src;
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error(`Unable to load ${src}`));
+    document.body.appendChild(script);
+  });
 }
