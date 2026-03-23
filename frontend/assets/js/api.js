@@ -74,6 +74,13 @@ export function updateVendorPayoutDetails(vendorId, payload) {
   });
 }
 
+export function updateVendorSoundDevice(vendorId, payload) {
+  return apiRequest(`/vendors/${vendorId}/sound-device`, {
+    method: "PUT",
+    body: JSON.stringify(payload)
+  });
+}
+
 export function getPublicMerchant(slug) {
   return apiRequest(`/vendors/public/${slug}`);
 }

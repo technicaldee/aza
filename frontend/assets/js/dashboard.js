@@ -2,7 +2,8 @@ import {
   getIdentityBanks,
   getVendorDashboard,
   resolveVendorAccount,
-  updateVendorPayoutDetails
+  updateVendorPayoutDetails,
+  updateVendorSoundDevice
 } from "./api.js";
 import {
   buildMerchantLink,
@@ -39,11 +40,17 @@ const accountNumberInput = document.querySelector("#account-number");
 const resolvedAccountNameInput = document.querySelector("#resolved-account-name");
 const accountMatchStatus = document.querySelector("#account-match-status");
 const logoutButton = document.querySelector("#logout-button");
+const soundDeviceBanner = document.querySelector("#sound-device-banner");
+const soundDeviceForm = document.querySelector("#sound-device-form");
+const soundDevicePhoneInput = document.querySelector("#sound-device-phone");
+const soundDeviceStatus = document.querySelector("#sound-device-status");
+const syncSoundDeviceButton = document.querySelector("#sync-sound-device");
 
 let merchantLink = "";
 let currentVendorId = "";
 let banksLoaded = false;
 let resolvedPayout = null;
+let currentVendor = null;
 
 function setActiveTab(tab) {
   const isOverview = tab === "overview";
@@ -90,6 +97,26 @@ function renderPayments(payments) {
     `;
     transactionsBody.appendChild(row);
   });
+}
+
+function renderSoundDeviceBanner(vendor) {
+  if (!soundDeviceBanner) {
+    return;
+  }
+
+  if (vendor.soundDevicePhone) {
+    soundDeviceBanner.classList.remove("bg-primary");
+    soundDeviceBanner.classList.add("bg-emerald-700");
+    soundDeviceStatus.textContent = `Synced to ${vendor.soundDevicePhone}. New payments will trigger SMS alerts for your sound device.`;
+    syncSoundDeviceButton.textContent = "Update Sound Device";
+    soundDevicePhoneInput.value = vendor.soundDevicePhone;
+  } else {
+    soundDeviceBanner.classList.remove("bg-emerald-700");
+    soundDeviceBanner.classList.add("bg-primary");
+    soundDeviceStatus.textContent = "No sound device synced yet.";
+    syncSoundDeviceButton.textContent = "Sync Sound Device";
+    soundDevicePhoneInput.value = "";
+  }
 }
 
 function renderBankOptions(banks) {
@@ -166,6 +193,7 @@ async function init() {
 
   try {
     const data = await getVendorDashboard(vendorId);
+    currentVendor = data.vendor;
     currentVendorId = data.vendor.id;
     setCurrentVendorId(data.vendor.id);
 
@@ -173,6 +201,8 @@ async function init() {
       window.location.href = `/verify-nin.html?vendor=${data.vendor.id}`;
       return;
     }
+
+    renderSoundDeviceBanner(data.vendor);
 
     vendorName.textContent = `Morning, ${data.vendor.fullName.split(" ")[0]}`;
     vendorSubtitle.textContent = `${data.vendor.businessName} is ready to receive payments.`;
@@ -276,6 +306,34 @@ payoutForm?.addEventListener("submit", async (event) => {
   } finally {
     payoutSubmitButton.disabled = false;
     payoutSubmitButton.textContent = "Save payout details";
+  }
+});
+
+soundDeviceForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!currentVendorId) {
+    showToast("Vendor session not found.", "error");
+    return;
+  }
+
+  syncSoundDeviceButton.disabled = true;
+  syncSoundDeviceButton.textContent = "Syncing...";
+
+  try {
+    const result = await updateVendorSoundDevice(currentVendorId, {
+      soundDevicePhone: soundDevicePhoneInput.value.trim()
+    });
+    currentVendor = result.vendor;
+    renderSoundDeviceBanner(result.vendor);
+    showToast("Sound device synced successfully.", "success");
+  } catch (error) {
+    showToast(error.message, "error");
+  } finally {
+    syncSoundDeviceButton.disabled = false;
+    syncSoundDeviceButton.textContent = currentVendor?.soundDevicePhone
+      ? "Update Sound Device"
+      : "Sync Sound Device";
   }
 });
 

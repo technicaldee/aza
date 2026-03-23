@@ -21,6 +21,7 @@ const defaultWebpayBaseUrl = isLive
   ? "https://newwebpay.interswitchng.com"
   : "https://newwebpay.qa.interswitchng.com";
 const defaultIdentityBaseUrl = "https://api-marketplace-routing.k8.isw.la/marketplace-routing/api/v1";
+const defaultTermiiBaseUrl = process.env.TERMII_BASE_URL || "https://api.ng.termii.com";
 
 export const config = {
   port,
@@ -53,6 +54,10 @@ export const config = {
   identityNinUrl:
     process.env.INTERSWITCH_IDENTITY_NIN_URL ||
     `${defaultIdentityBaseUrl}/verify/identity/nin`,
+  termiiApiKey: process.env.TERMII_API_KEY || "",
+  termiiBaseUrl: defaultTermiiBaseUrl,
+  termiiSenderId: process.env.TERMII_SENDER_ID || "AZA",
+  termiiChannel: process.env.TERMII_CHANNEL || "dnd",
   siteRedirectUrl:
     process.env.INTERSWITCH_SITE_REDIRECT_URL ||
     `${backendBaseUrl}/api/interswitch/redirect`,

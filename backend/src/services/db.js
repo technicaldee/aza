@@ -34,6 +34,8 @@ export async function initDb() {
       bank_name TEXT,
       account_number TEXT,
       account_name TEXT,
+      sound_device_phone TEXT,
+      sound_device_synced_at TIMESTAMPTZ,
       password_hash TEXT,
       nin TEXT,
       nin_verified BOOLEAN NOT NULL DEFAULT FALSE,
@@ -77,6 +79,16 @@ export async function initDb() {
   await query(`
     ALTER TABLE vendors
     ADD COLUMN IF NOT EXISTS bank_code TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS sound_device_phone TEXT;
+  `);
+
+  await query(`
+    ALTER TABLE vendors
+    ADD COLUMN IF NOT EXISTS sound_device_synced_at TIMESTAMPTZ;
   `);
 
   await query(`

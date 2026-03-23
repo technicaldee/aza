@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { requeryTransaction } from "../services/interswitch.js";
+import { notifySoundDevice } from "../services/sound-device.js";
 import {
   createPayment,
   getPaymentByTransactionRef,
@@ -7,6 +8,19 @@ import {
 } from "../services/store.js";
 
 const router = Router();
+
+async function sendSoundDeviceNotification(vendor, payment) {
+  try {
+    return await notifySoundDevice({ vendor, payment });
+  } catch (error) {
+    console.error("Sound device notification failed:", error);
+    return {
+      sent: false,
+      reason: "error",
+      message: error.message
+    };
+  }
+}
 
 router.post("/", async (req, res, next) => {
   try {
@@ -34,8 +48,9 @@ router.post("/", async (req, res, next) => {
       payerName,
       note
     });
+    const soundDevice = await sendSoundDeviceNotification(vendor, payment);
 
-    res.status(201).json({ payment, vendor });
+    res.status(201).json({ payment, vendor, soundDevice });
   } catch (error) {
     next(error);
   }
@@ -99,8 +114,9 @@ router.post("/verify-inline", async (req, res, next) => {
       providerResponseCode: verification?.ResponseCode,
       providerResponseDescription: verification?.ResponseDescription
     });
+    const soundDevice = await sendSoundDeviceNotification(vendor, payment);
 
-    res.status(201).json({ payment, vendor, verification });
+    res.status(201).json({ payment, vendor, verification, soundDevice });
   } catch (error) {
     next(error);
   }

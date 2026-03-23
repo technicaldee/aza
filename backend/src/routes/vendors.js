@@ -4,6 +4,7 @@ import {
   resolveIdentityAccount,
   verifyNinIdentity
 } from "../services/interswitch.js";
+import { formatSoundDevicePhone } from "../services/termii.js";
 import {
   authenticateVendor,
   createVendor,
@@ -11,7 +12,8 @@ import {
   getVendorById,
   getVendorBySlug,
   updateVendorNinVerification,
-  updateVendorPayoutDetails
+  updateVendorPayoutDetails,
+  updateVendorSoundDevice
 } from "../services/store.js";
 
 const router = Router();
@@ -293,6 +295,33 @@ router.put("/:vendorId/payout-details", async (req, res, next) => {
       bankName: resolved.bankName || String(req.body.bankName || "").trim(),
       accountNumber: String(req.body.accountNumber || "").trim(),
       accountName: resolved.accountName
+    });
+
+    res.json({ vendor: updatedVendor });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/:vendorId/sound-device", async (req, res, next) => {
+  try {
+    const vendor = await getVendorById(req.params.vendorId);
+
+    if (!vendor) {
+      res.status(404).json({ message: "Vendor not found." });
+      return;
+    }
+
+    const soundDevicePhone = formatSoundDevicePhone(req.body.soundDevicePhone);
+
+    if (!soundDevicePhone) {
+      res.status(400).json({ message: "A valid sound device phone number is required." });
+      return;
+    }
+
+    const updatedVendor = await updateVendorSoundDevice(vendor.id, {
+      soundDevicePhone,
+      soundDeviceSyncedAt: new Date().toISOString()
     });
 
     res.json({ vendor: updatedVendor });

@@ -95,6 +95,30 @@
         </div>
       </header>
 
+      <section id="sound-device-banner" class="mb-10 rounded-[2rem] bg-primary text-white shadow-xl shadow-primary/10">
+        <div class="grid gap-6 p-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div class="space-y-3">
+            <p class="text-sm font-bold uppercase tracking-[0.24em] text-primary-fixed">Sound Device Sync</p>
+            <h2 class="text-3xl font-black tracking-tight font-headline">Sync your sound device</h2>
+            <p class="max-w-2xl text-white/80">
+              Add the phone number inside your sound device SIM. Every successful payment will trigger an SMS alert in your selected signup language so the device can read it out loud.
+            </p>
+            <p id="sound-device-status" class="text-sm font-semibold text-primary-fixed">
+              No sound device synced yet.
+            </p>
+          </div>
+          <form id="sound-device-form" class="grid gap-4 rounded-[1.5rem] bg-white/10 p-5 backdrop-blur-sm">
+            <label class="block">
+              <span class="mb-2 block text-sm font-bold text-white/80">Sound Device Phone Number</span>
+              <input id="sound-device-phone" class="w-full rounded-xl border border-white/15 bg-white px-4 py-4 font-semibold text-on-surface focus:border-white focus:ring-white/20" name="soundDevicePhone" placeholder="08012345678" required type="tel" />
+            </label>
+            <button id="sync-sound-device" class="rounded-xl bg-white px-6 py-4 text-lg font-bold text-primary shadow-lg shadow-slate-900/10 transition-transform active:scale-[0.98]" type="submit">
+              Sync Sound Device
+            </button>
+          </form>
+        </div>
+      </section>
+
       <section id="overview-panel">
       <div class="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
         <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary-container p-8 group md:col-span-2">

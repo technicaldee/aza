@@ -39,6 +39,8 @@ function mapVendor(row) {
     bankName: row.bank_name,
     accountNumber: row.account_number,
     accountName: row.account_name,
+    soundDevicePhone: row.sound_device_phone,
+    soundDeviceSyncedAt: row.sound_device_synced_at,
     nin: row.nin,
     ninVerified: Boolean(row.nin_verified),
     ninStatus: row.nin_status,
@@ -204,6 +206,21 @@ export async function updateVendorPayoutDetails(vendorId, payload) {
       RETURNING *
     `,
     [vendorId, payload.bankCode, payload.bankName, payload.accountNumber, payload.accountName]
+  );
+
+  return mapVendor(result.rows[0]);
+}
+
+export async function updateVendorSoundDevice(vendorId, payload) {
+  const result = await query(
+    `
+      UPDATE vendors
+      SET sound_device_phone = $2,
+          sound_device_synced_at = $3
+      WHERE id = $1
+      RETURNING *
+    `,
+    [vendorId, payload.soundDevicePhone, payload.soundDeviceSyncedAt || null]
   );
 
   return mapVendor(result.rows[0]);
