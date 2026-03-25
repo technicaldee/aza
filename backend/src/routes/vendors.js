@@ -18,6 +18,29 @@ import {
 
 const router = Router();
 
+const FALLBACK_BANKS = [
+  { code: "044", name: "Access Bank", slug: "access-bank" },
+  { code: "014", name: "Afribank", slug: "afribank" },
+  { code: "063", name: "Access Bank (Diamond)", slug: "access-bank-diamond" },
+  { code: "050", name: "Ecobank Nigeria", slug: "ecobank-nigeria" },
+  { code: "011", name: "First Bank of Nigeria", slug: "first-bank-of-nigeria" },
+  { code: "214", name: "First City Monument Bank", slug: "fcmb" },
+  { code: "070", name: "Fidelity Bank", slug: "fidelity-bank" },
+  { code: "058", name: "Guaranty Trust Bank", slug: "gtbank" },
+  { code: "030", name: "Heritage Bank", slug: "heritage-bank" },
+  { code: "082", name: "Keystone Bank", slug: "keystone-bank" },
+  { code: "076", name: "Polaris Bank", slug: "polaris-bank" },
+  { code: "221", name: "Stanbic IBTC Bank", slug: "stanbic-ibtc-bank" },
+  { code: "068", name: "Standard Chartered Bank", slug: "standard-chartered-bank" },
+  { code: "232", name: "Sterling Bank", slug: "sterling-bank" },
+  { code: "100", name: "Suntrust Bank", slug: "suntrust-bank" },
+  { code: "032", name: "Union Bank of Nigeria", slug: "union-bank-of-nigeria" },
+  { code: "033", name: "United Bank for Africa", slug: "uba" },
+  { code: "215", name: "Unity Bank", slug: "unity-bank" },
+  { code: "035", name: "Wema Bank", slug: "wema-bank" },
+  { code: "057", name: "Zenith Bank", slug: "zenith-bank" }
+];
+
 function normalizeName(value) {
   return String(value || "")
     .toUpperCase()
@@ -95,11 +118,25 @@ router.post("/", async (req, res, next) => {
 
 router.get("/banks", async (req, res, next) => {
   try {
-    const response = await getIdentityBankList();
+    let response = null;
+    try {
+      response = await getIdentityBankList();
+    } catch (error) {
+      // The upstream marketplace endpoint intermittently returns 502 HTML.
+      // Keep onboarding unblocked with a curated bank fallback list.
+      res.json({
+        banks: FALLBACK_BANKS,
+        fallback: true,
+        message: "Live bank list is temporarily unavailable. Showing fallback list."
+      });
+      return;
+    }
 
     if (response?.success !== true || !Array.isArray(response?.data)) {
-      res.status(502).json({
-        message: response?.message || "Unable to fetch bank list."
+      res.json({
+        banks: FALLBACK_BANKS,
+        fallback: true,
+        message: response?.message || "Live bank list unavailable. Showing fallback list."
       });
       return;
     }
