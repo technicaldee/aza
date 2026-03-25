@@ -164,9 +164,11 @@ router.post("/:vendorId/verify-nin", async (req, res, next) => {
     });
 
     const ninCheck = verification?.data?.summary?.nin_check;
+    const verificationStatus =
+      verification?.data?.status?.status || verification?.data?.ninStatus?.status || "";
     const verified =
       verification?.success === true &&
-      verification?.data?.ninStatus?.status === "verified" &&
+      verificationStatus === "verified" &&
       (ninCheck?.status === "EXACT_MATCH" ||
         (ninCheck?.fieldMatches?.firstname === true &&
           ninCheck?.fieldMatches?.lastname === true));
@@ -184,7 +186,7 @@ router.post("/:vendorId/verify-nin", async (req, res, next) => {
     const updatedVendor = await updateVendorNinVerification(vendor.id, {
       nin,
       ninVerified: true,
-      ninStatus: verification?.data?.ninStatus?.status || "verified",
+      ninStatus: verificationStatus || "verified",
       ninVerifiedAt: new Date().toISOString(),
       firstName: vendor.firstName,
       lastName: vendor.lastName
