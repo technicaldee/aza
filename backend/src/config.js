@@ -13,6 +13,13 @@ const backendBaseUrl = process.env.BACKEND_BASE_URL || `http://localhost:${port}
 const frontendBaseUrl = process.env.FRONTEND_BASE_URL || "http://localhost:5173";
 const isLive = mode === "LIVE";
 
+function parseOriginList(value) {
+  return (value || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 const defaultPassportTokenUrl = "https://qa.interswitchng.com/passport/oauth/token";
 const defaultApiBaseUrl = isLive
   ? "https://webpay.interswitchng.com"
@@ -28,6 +35,12 @@ export const config = {
   mode,
   backendBaseUrl,
   frontendBaseUrl,
+  corsAllowedOrigins: Array.from(
+    new Set([
+      frontendBaseUrl,
+      ...parseOriginList(process.env.CORS_ALLOWED_ORIGINS)
+    ])
+  ),
   databaseUrl: process.env.DATABASE_URL || "",
   clientId: process.env.INTERSWITCH_CLIENT_ID || "",
   clientSecret: process.env.INTERSWITCH_CLIENT_SECRET || "",

@@ -20,7 +20,16 @@ function rawBodySaver(req, res, buffer) {
 
 app.use(
   cors({
-    origin: true
+    origin(origin, callback) {
+      // Allow non-browser clients (curl, server-to-server, webhooks) with no Origin header.
+      if (!origin) return callback(null, true);
+
+      if (config.corsAllowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    }
   })
 );
 app.use(morgan("dev"));
