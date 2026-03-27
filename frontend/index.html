@@ -94,10 +94,14 @@
               <a class="rounded-lg bg-white px-10 py-5 text-lg font-bold text-primary transition-all hover:shadow-2xl hover:shadow-white/10" href="/signup.html">
                 Get Your QR Code
               </a>
-              <a class="flex items-center gap-2 rounded-lg border-2 border-white/20 px-10 py-5 text-lg font-bold text-white transition-all hover:bg-white/10" href="/signup.html">
+              <button
+                id="watch-demo-button"
+                class="flex items-center gap-2 rounded-lg border-2 border-white/20 px-10 py-5 text-lg font-bold text-white transition-all hover:bg-white/10"
+                type="button"
+              >
                 <span class="material-symbols-outlined">play_circle</span>
                 Watch Demo
-              </a>
+              </button>
             </div>
           </div>
           <div class="group relative">
@@ -239,6 +243,9 @@
           <p class="relative z-10 mx-auto mb-12 max-w-2xl text-xl text-primary-fixed">
             Join vendors using AZA to share payment links, show QR codes, and track transactions in one place.
           </p>
+          <p class="relative z-10 mx-auto mb-12 max-w-2xl text-base text-white/85">
+            Example: If I visit Ghana and do not have cedis, I can still pay transportation with AZA from my naira card or account, and the vendor receives in their local currency.
+          </p>
           <div class="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
             <a class="rounded-lg bg-secondary-container px-12 py-5 text-lg font-bold text-white shadow-xl transition-all hover:-translate-y-1" href="/signup.html">Create Free Account</a>
             <a class="rounded-lg border border-white/20 bg-white/10 px-12 py-5 text-lg font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20" href="/signin.html">Sign In</a>
@@ -246,6 +253,32 @@
         </div>
       </section>
     </main>
+
+    <div id="demo-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 p-4">
+      <div class="w-full max-w-md overflow-hidden rounded-2xl bg-black shadow-2xl">
+        <div class="flex items-center justify-between bg-white/10 px-4 py-3 text-white">
+          <p class="text-sm font-bold uppercase tracking-wider">AZA Demo</p>
+          <button
+            id="close-demo-modal"
+            class="rounded-md border border-white/30 px-2 py-1 text-xs font-bold text-white transition hover:bg-white/20"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+        <div class="aspect-[9/16] w-full">
+          <iframe
+            id="demo-video-frame"
+            class="h-full w-full"
+            src=""
+            title="AZA Demo Video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
 
     <footer class="w-full border-t border-slate-200 bg-slate-50 py-12">
       <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-8 md:grid-cols-2">
@@ -263,5 +296,37 @@
         </div>
       </div>
     </footer>
+    <script>
+      const watchDemoButton = document.querySelector("#watch-demo-button");
+      const demoModal = document.querySelector("#demo-modal");
+      const closeDemoModalButton = document.querySelector("#close-demo-modal");
+      const demoVideoFrame = document.querySelector("#demo-video-frame");
+      const demoEmbedUrl = "https://www.youtube.com/embed/7j0OL6sbGOk?autoplay=1";
+
+      function openDemoModal() {
+        demoModal.classList.remove("hidden");
+        demoModal.classList.add("flex");
+        demoVideoFrame.src = demoEmbedUrl;
+      }
+
+      function closeDemoModal() {
+        demoModal.classList.add("hidden");
+        demoModal.classList.remove("flex");
+        demoVideoFrame.src = "";
+      }
+
+      watchDemoButton?.addEventListener("click", openDemoModal);
+      closeDemoModalButton?.addEventListener("click", closeDemoModal);
+      demoModal?.addEventListener("click", (event) => {
+        if (event.target === demoModal) {
+          closeDemoModal();
+        }
+      });
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !demoModal.classList.contains("hidden")) {
+          closeDemoModal();
+        }
+      });
+    </script>
   </body>
 </html>

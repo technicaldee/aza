@@ -14,6 +14,10 @@ We are inspired by India's UPI and are replicating that accessibility model for 
 
 AZA is designed for keke riders, transport operators, and small businesses that cannot afford payment ambiguity.
 
+### Cross-Border Example
+
+If I visit Ghana and do not have cedis, I can still pay for transportation using AZA from my naira card/account, and the vendor receives in their local currency (based on supported Interswitch currencies).
+
 ## How AZA Works
 
 1. Vendor signs up and gets a unique payment link.
@@ -78,6 +82,21 @@ Local URLs:
 
 - Frontend: `http://localhost:5173`
 - Backend: `http://localhost:4000`
+
+## Sandbox Test Credentials and Rules
+
+For demo/testing in Interswitch test mode:
+
+- Signup must use:
+  - First name: `Bunch`
+  - Last name: `Dillon`
+- Identity verification test value:
+  - `63184876213`
+- Quick login:
+  - Email: `edidiong.udoh@pintoptechnologies.com`
+  - Password: `Test1234`
+
+Any deviation from these sandbox values may fail during test verification as we are using test mode for nin verificattion
 
 ## Environment Notes
 
