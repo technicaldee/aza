@@ -44,7 +44,9 @@
     </style>
   </head>
   <body class="page-shell bg-surface text-on-surface">
-    <aside class="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col bg-white p-4 shadow-[10px_0_40px_rgba(15,23,42,0.04)]">
+    <div id="mobile-sidebar-overlay" class="fixed inset-0 z-30 hidden bg-slate-900/40 md:hidden"></div>
+
+    <aside id="dashboard-sidebar" class="fixed left-0 top-0 z-40 flex h-screen w-64 -translate-x-full flex-col bg-white p-4 shadow-[10px_0_40px_rgba(15,23,42,0.04)] transition-transform duration-300 md:translate-x-0">
       <div class="mb-10 px-2">
         <img alt="AZA Logo" class="h-10" src="/logo.png" />
       </div>
@@ -77,7 +79,19 @@
       </div>
     </aside>
 
-    <main class="ml-64 min-h-screen p-8 lg:p-12">
+    <main class="min-h-screen p-4 md:ml-64 md:p-8 lg:p-12">
+      <header class="mb-6 flex items-center justify-between rounded-xl bg-white p-3 shadow-sm md:hidden">
+        <img alt="AZA Logo" class="h-8" src="/logo.png" />
+        <button
+          id="open-mobile-sidebar"
+          class="inline-flex items-center justify-center rounded-lg bg-surface-container-low p-2 text-primary"
+          type="button"
+          aria-label="Open sidebar"
+        >
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </header>
+
       <header class="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h1 id="vendor-name" class="mb-2 text-4xl font-black leading-none tracking-tight text-primary font-headline">Morning, Vendor</h1>
@@ -149,7 +163,7 @@
             <h3 class="text-xl font-bold text-primary font-headline">Recent Transactions</h3>
             <span class="text-sm font-bold text-secondary font-headline">Live</span>
           </div>
-          <div class="overflow-hidden rounded-xl bg-surface-container-lowest">
+          <div class="overflow-x-auto rounded-xl bg-surface-container-lowest">
             <table class="w-full border-collapse">
               <thead>
                 <tr class="bg-surface-container-low text-left">

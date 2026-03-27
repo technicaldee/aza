@@ -45,12 +45,51 @@ const soundDeviceForm = document.querySelector("#sound-device-form");
 const soundDevicePhoneInput = document.querySelector("#sound-device-phone");
 const soundDeviceStatus = document.querySelector("#sound-device-status");
 const syncSoundDeviceButton = document.querySelector("#sync-sound-device");
+const mobileSidebar = document.querySelector("#dashboard-sidebar");
+const mobileSidebarOverlay = document.querySelector("#mobile-sidebar-overlay");
+const openMobileSidebarButton = document.querySelector("#open-mobile-sidebar");
 
 let merchantLink = "";
 let currentVendorId = "";
 let banksLoaded = false;
 let resolvedPayout = null;
 let currentVendor = null;
+
+function isMobileViewport() {
+  return window.matchMedia("(max-width: 767px)").matches;
+}
+
+function openMobileSidebar() {
+  if (!mobileSidebar || !mobileSidebarOverlay) {
+    return;
+  }
+
+  mobileSidebar.classList.remove("-translate-x-full");
+  mobileSidebarOverlay.classList.remove("hidden");
+}
+
+function closeMobileSidebar() {
+  if (!mobileSidebar || !mobileSidebarOverlay) {
+    return;
+  }
+
+  mobileSidebar.classList.add("-translate-x-full");
+  mobileSidebarOverlay.classList.add("hidden");
+}
+
+function syncSidebarWithViewport() {
+  if (!mobileSidebar || !mobileSidebarOverlay) {
+    return;
+  }
+
+  if (isMobileViewport()) {
+    closeMobileSidebar();
+    return;
+  }
+
+  mobileSidebar.classList.remove("-translate-x-full");
+  mobileSidebarOverlay.classList.add("hidden");
+}
 
 function setActiveTab(tab) {
   const isOverview = tab === "overview";
@@ -267,6 +306,9 @@ downloadQrButton?.addEventListener("click", () => {
 
 overviewTabButton?.addEventListener("click", () => {
   setActiveTab("overview");
+  if (isMobileViewport()) {
+    closeMobileSidebar();
+  }
 });
 
 withdrawTabButton?.addEventListener("click", () => {
@@ -274,6 +316,9 @@ withdrawTabButton?.addEventListener("click", () => {
   ensureBanksLoaded().catch((error) => {
     showToast(error.message, "error");
   });
+  if (isMobileViewport()) {
+    closeMobileSidebar();
+  }
 });
 
 payoutForm?.addEventListener("submit", async (event) => {
@@ -351,5 +396,10 @@ accountNumberInput?.addEventListener("input", () => {
 });
 
 setActiveTab("overview");
+syncSidebarWithViewport();
+
+openMobileSidebarButton?.addEventListener("click", openMobileSidebar);
+mobileSidebarOverlay?.addEventListener("click", closeMobileSidebar);
+window.addEventListener("resize", syncSidebarWithViewport);
 
 init();
