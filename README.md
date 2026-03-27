@@ -12,7 +12,7 @@ We are inspired by India's UPI and are replicating that accessibility model for 
 - faster trust at point-of-sale with instant confirmation
 - lightweight hardware for offline-like confidence while moving
 
-AZA is designed for keke riders, transport operators, and small businesses that cannot afford payment ambiguity.
+AZA is designed for keke riders, transport operators, and small businesses that cannot afford payment ambiguity. Payment alerts are currently available in 6 nigerian languages.
 
 ### Cross-Border Example
 
