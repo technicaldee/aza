@@ -1,10 +1,10 @@
 import { getPublicConfig, getPublicMerchant, verifyInlinePayment } from "./api.js";
 import {
+  amountToMinor,
   formatDateTime,
-  formatNaira,
+  formatCurrency,
   generateTransactionReference,
   loadExternalScript,
-  nairaToMinor,
   showToast
 } from "./common.js";
 
@@ -12,6 +12,8 @@ const merchantName = document.querySelector("#merchant-name");
 const merchantLocation = document.querySelector("#merchant-location");
 const merchantCategory = document.querySelector("#merchant-category");
 const amountInput = document.querySelector("#amount-input");
+const currencySelect = document.querySelector("#currency-select");
+const currencySymbol = document.querySelector("#currency-symbol");
 const payerNameInput = document.querySelector("#payer-name");
 const payerEmailInput = document.querySelector("#payer-email");
 const submitButton = document.querySelector("#submit-payment");
@@ -25,6 +27,60 @@ const quicktellerStatus = document.querySelector("#quickteller-status");
 
 let merchant = null;
 let publicConfig = null;
+let selectedCurrency = null;
+
+const CURRENCY_METADATA = {
+  404: { alpha: "KES", symbol: "KSh", label: "Kenyan Shilling (KES)" },
+  566: { alpha: "NGN", symbol: "₦", label: "Nigerian Naira (NGN)" },
+  710: { alpha: "ZAR", symbol: "R", label: "South African Rand (ZAR)" },
+  826: { alpha: "GBP", symbol: "£", label: "British Pound (GBP)" },
+  840: { alpha: "USD", symbol: "$", label: "US Dollar (USD)" },
+  936: { alpha: "GHS", symbol: "GH₵", label: "Ghanaian Cedi (GHS)" },
+  978: { alpha: "EUR", symbol: "€", label: "Euro (EUR)" }
+};
+
+function getCurrencyInfo(code) {
+  const numericCode = Number(code);
+  const meta = CURRENCY_METADATA[numericCode];
+  if (meta) {
+    return { code: numericCode, ...meta };
+  }
+
+  return {
+    code: numericCode,
+    alpha: "NGN",
+    symbol: "₦",
+    label: `Currency ${numericCode}`
+  };
+}
+
+function renderCurrencyOptions() {
+  if (!currencySelect || !publicConfig) {
+    return;
+  }
+
+  const supported = Array.isArray(publicConfig.supportedCurrencies)
+    ? publicConfig.supportedCurrencies
+    : [];
+  const defaultCode = Number(publicConfig.currency || 566);
+  const uniqueCodes = Array.from(new Set([defaultCode, ...supported.map(Number).filter(Boolean)]));
+
+  currencySelect.innerHTML = "";
+
+  uniqueCodes.forEach((code) => {
+    const currency = getCurrencyInfo(code);
+    const option = document.createElement("option");
+    option.value = String(currency.code);
+    option.textContent = currency.label;
+    option.selected = currency.code === defaultCode;
+    currencySelect.appendChild(option);
+  });
+
+  selectedCurrency = getCurrencyInfo(defaultCode);
+  if (currencySymbol) {
+    currencySymbol.textContent = selectedCurrency.symbol;
+  }
+}
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
@@ -46,6 +102,7 @@ async function init() {
 
     merchant = merchantData;
     publicConfig = config;
+    renderCurrencyOptions();
 
     merchantName.textContent = merchant.businessName;
     merchantLocation.textContent = merchant.location;
@@ -64,7 +121,7 @@ async function init() {
 
 async function openQuicktellerInline() {
   const amount = Number(amountInput.value || 0);
-  const amountMinor = nairaToMinor(amount);
+  const amountMinor = amountToMinor(amount);
   const payerEmail = payerEmailInput?.value.trim() || "";
 
   if (!merchant || !publicConfig) {
@@ -86,6 +143,7 @@ async function openQuicktellerInline() {
   submitButton.textContent = "Opening checkout...";
 
   try {
+    const activeCurrency = selectedCurrency || getCurrencyInfo(publicConfig.currency || 566);
     await loadExternalScript(publicConfig.checkoutScriptUrl);
 
     const txnRef = generateTransactionReference("aza_qt");
@@ -96,7 +154,7 @@ async function openQuicktellerInline() {
       pay_item_name: `${merchant.businessName} Payment`,
       txn_ref: txnRef,
       amount: amountMinor,
-      currency: Number(publicConfig.currency),
+      currency: activeCurrency.code,
       cust_name: payerNameInput?.value.trim() || "Customer",
       cust_email: payerEmail,
       site_redirect_url: publicConfig.siteRedirectUrl,
@@ -114,7 +172,7 @@ async function openQuicktellerInline() {
           });
 
           successCard.classList.remove("hidden");
-          successAmount.textContent = formatNaira(result.payment.amount);
+          successAmount.textContent = formatCurrency(result.payment.amount, activeCurrency.alpha);
           successTime.textContent = formatDateTime(result.payment.createdAt);
           showToast("Payment verified and recorded.", "success");
         } catch (error) {
@@ -133,5 +191,11 @@ async function openQuicktellerInline() {
 }
 
 submitButton?.addEventListener("click", openQuicktellerInline);
+currencySelect?.addEventListener("change", () => {
+  selectedCurrency = getCurrencyInfo(currencySelect.value);
+  if (currencySymbol) {
+    currencySymbol.textContent = selectedCurrency.symbol;
+  }
+});
 
 init();

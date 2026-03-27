@@ -20,6 +20,20 @@ function parseOriginList(value) {
     .filter(Boolean);
 }
 
+function parseSupportedCurrencyCodes(value) {
+  const defaults = ["566", "840", "978", "826", "404", "936", "710"];
+  const parsed = (value || "")
+    .split(",")
+    .map((code) => code.trim())
+    .filter((code) => /^\d{3}$/.test(code));
+
+  if (parsed.length === 0) {
+    return defaults;
+  }
+
+  return Array.from(new Set(parsed));
+}
+
 const defaultPassportTokenUrl = "https://qa.interswitchng.com/passport/oauth/token";
 const defaultApiBaseUrl = isLive
   ? "https://webpay.interswitchng.com"
@@ -50,6 +64,7 @@ export const config = {
   payItemId: process.env.INTERSWITCH_PAY_ITEM_ID || "",
   payItemName: process.env.INTERSWITCH_PAY_ITEM_NAME || "AZA Instant Payment",
   currency: process.env.INTERSWITCH_CURRENCY || "566",
+  supportedCurrencies: parseSupportedCurrencyCodes(process.env.INTERSWITCH_SUPPORTED_CURRENCIES),
   passportTokenUrl:
     process.env.INTERSWITCH_PASSPORT_TOKEN_URL || defaultPassportTokenUrl,
   apiBaseUrl: process.env.INTERSWITCH_API_BASE_URL || defaultApiBaseUrl,

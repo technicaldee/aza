@@ -1,163 +1,119 @@
-# AZA Web Checkout Demo
+# AZA
 
-This repo is split into a separate `frontend/` and `backend/` so you can keep the merchant-facing experience isolated from the server-side Interswitch verification, checkout work, and Postgres-backed merchant data.
+AZA is a UPI-inspired payment experience built for Nigeria, focused on transporters and small businesses that need fast, trustworthy payment confirmation.
 
-## What is included
+Customers can pay through a simple AZA link (QR/link flow), and vendors get immediate confirmation through the app and optional voice hardware.
 
-- A landing page based on your AZA mockup
-- A vendor signup page that persists merchant records in Postgres
-- A mandatory post-signup NIN verification step before dashboard access
-- A live vendor dashboard page based on your mockup
-- A dashboard banner for syncing a sound device phone number
-- A clean merchant payment page opened by merchant slug
-- A backend that stores signup data and payment history in Postgres
-- Translated sound-device SMS alerts sent through Termii after successful payments
-- A `sound_machine/` device module that watches SMS and reads messages out loud
-- Existing Interswitch helper routes for:
-  - inline checkout
-  - web redirect checkout
-  - server-side transaction requery
-  - wallet initialize and status checks
-  - static transfer account generation
-- A verified payment response page for redirect returns
-- An Express backend that keeps the client secret off the frontend
+## Hackathon Story
 
-## Project structure
+We are inspired by India's UPI and are replicating that accessibility model for Nigeria:
 
-```text
-.
-├── backend
-│   ├── .env.example
-│   ├── package.json
-│   └── src
-│       ├── config.js
-│       ├── routes
-│       ├── server.js
-│       └── services
-├── frontend
-│   ├── assets
-│   │   ├── css
-│   │   └── js
-│   ├── dashboard.html
-│   ├── index.html
-│   ├── package.json
-│   ├── pay.html
-│   ├── payment-response.html
-│   └── vite.config.js
-├── sound_machine
-│   ├── README.md
-│   ├── requirements.txt
-│   └── sms_reader.py
-└── package.json
-```
+- frictionless payment acceptance for everyday merchants
+- faster trust at point-of-sale with instant confirmation
+- lightweight hardware for offline-like confidence while moving
 
-## Setup
+AZA is designed for keke riders, transport operators, and small businesses that cannot afford payment ambiguity.
 
-1. Install dependencies from the repo root:
+## How AZA Works
+
+1. Vendor signs up and gets a unique payment link.
+2. Vendor shares link/QR with customers.
+3. Customer opens the pay screen, enters amount, and chooses currency.
+4. Payment is processed via Interswitch.
+5. Backend verifies payment and records transaction.
+6. Vendor receives confirmation in dashboard and on sound hardware.
+
+## Sound Hardware (Core Differentiator)
+
+AZA includes a simple hardware flow for voice confirmation:
+
+- the device has a SIM and runs the Python module in `sound_machine/sms_reader.py`
+- Termii sends SMS alerts after verified payments
+- the device reads only SMS from the official configured sender ID
+- audio can play through the device speaker or any affordable mini speaker via AUX
+
+The external speaker is optional. The key value is reliable spoken confirmation.
+
+## Key Features
+
+- Vendor onboarding and dashboard
+- Mandatory NIN verification step for trust/compliance flow
+- Public pay page per merchant slug
+- Multi-currency checkout (default NGN, configurable supported currencies for Interswitch)
+- Payment verification using server-side Interswitch requery
+- Termii-powered SMS notification pipeline for sound device playback
+- Payment history and merchant data stored in Postgres
+
+## Tech Stack
+
+- Frontend: Vite + vanilla JS + Tailwind
+- Backend: Node.js + Express
+- Database: Postgres
+- Payments: Interswitch
+- Messaging: Termii
+- Device runtime: Python (`sound_machine`)
+
+## Team Contributions
+
+This section is included for hackathon submission compliance (technical and non-technical contributions).
+
+- **Edidiong Udoh** ([github.com/technicaldee](https://github.com/technicaldee))
+  - built the application codebase (frontend, backend, payment and verification flows)
+  - integrated deployment and shipped the hosted environment
+  - implemented device/SMS integration logic across the platform
+- **Inimfon Udoh** ([github.com/innie4](https://github.com/innie4))
+  - designed the product direction and user experience
+  - created design mockups and visual flow
+  - defined interaction flow across merchant and customer journeys
+
+## Local Setup
 
 ```bash
 npm install
-```
-
-2. Update the backend env:
-
-```bash
 cp backend/.env.example backend/.env
-```
-
-3. Add your actual values in `backend/.env`.
-
-Important:
-- `DATABASE_URL` is required. The app now uses Postgres as the source of truth for vendors and payments.
-- `INTERSWITCH_CLIENT_ID` and `INTERSWITCH_CLIENT_SECRET` are for server-side token generation.
-- `INTERSWITCH_IDENTITY_CLIENT_ID` and `INTERSWITCH_IDENTITY_CLIENT_SECRET` are used for NIN verification and bank/account validation.
-- `INTERSWITCH_PAY_ITEM_ID` is required before inline checkout and redirect checkout can open successfully.
-- `INTERSWITCH_SITE_REDIRECT_URL` should point to the backend redirect handler so the backend can verify the transaction before the frontend shows success.
-- `TERMII_API_KEY` is used for sound-device SMS alerts.
-- `TERMII_BASE_URL` should be your Termii dashboard base URL. The current default is `https://api.ng.termii.com`.
-
-## Run locally
-
-```bash
 npm run dev
 ```
 
-Frontend:
-- `http://localhost:5173`
+Local URLs:
 
-Backend:
-- `http://localhost:4000`
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:4000`
 
-## Deploy on Vercel
+## Environment Notes
 
-Deploy frontend and backend as two separate Vercel projects from the same repo.
+Core backend variables:
 
-1. Create a **frontend** Vercel project with root directory `frontend/`.
-2. Create a **backend** Vercel project with root directory `backend/`.
-3. Add environment variables:
-
-Backend project:
 - `DATABASE_URL`
 - `INTERSWITCH_CLIENT_ID`
 - `INTERSWITCH_CLIENT_SECRET`
-- `INTERSWITCH_MERCHANT_CODE` (or ensure it can be derived from token claims)
 - `INTERSWITCH_PAY_ITEM_ID`
-- `INTERSWITCH_PAY_ITEM_NAME`
-- `INTERSWITCH_CURRENCY`
-- `INTERSWITCH_MODE`
-- `INTERSWITCH_PASSPORT_TOKEN_URL`
-- `INTERSWITCH_API_BASE_URL`
-- `INTERSWITCH_WEBPAY_BASE_URL`
-- `INTERSWITCH_WEBHOOK_SECRET` (if using signed webhook validation)
-- `INTERSWITCH_IDENTITY_CLIENT_ID`
-- `INTERSWITCH_IDENTITY_CLIENT_SECRET`
-- `INTERSWITCH_IDENTITY_PASSPORT_TOKEN_URL`
-- `INTERSWITCH_IDENTITY_BASE_URL`
-- `INTERSWITCH_IDENTITY_BANK_LIST_URL`
-- `INTERSWITCH_IDENTITY_ACCOUNT_RESOLVE_URL`
-- `INTERSWITCH_IDENTITY_NIN_URL`
+- `INTERSWITCH_CURRENCY` (default currency code, NGN is `566`)
+- `INTERSWITCH_SUPPORTED_CURRENCIES` (comma-separated numeric codes, for pay screen selector)
+- `INTERSWITCH_SITE_REDIRECT_URL`
 - `TERMII_API_KEY`
-- `TERMII_BASE_URL`
 - `TERMII_SENDER_ID`
-- `TERMII_CHANNEL`
-- `BACKEND_BASE_URL=https://<your-backend-project>.vercel.app`
-- `FRONTEND_BASE_URL=https://<your-frontend-project>.vercel.app`
-- `INTERSWITCH_SITE_REDIRECT_URL=https://<your-backend-project>.vercel.app/api/interswitch/redirect`
 
-Frontend project:
-- `VITE_API_BASE_URL=https://<your-backend-project>.vercel.app/api`
+## Deployment
 
-After both are deployed, frontend calls backend through `VITE_API_BASE_URL`, and backend redirects/response URLs resolve to the deployed domains.
+Deploy as two Vercel projects from this monorepo:
 
-## Useful backend endpoints
+- frontend root: `frontend/`
+- backend root: `backend/`
 
-- `GET /api/health`
+Set frontend `VITE_API_BASE_URL` to backend `/api` URL, then configure backend env variables for Interswitch, Postgres, and Termii.
+
+## API Highlights
+
 - `GET /api/config/public`
 - `POST /api/vendors`
 - `GET /api/vendors/public/:slug`
-- `GET /api/vendors/:vendorId/dashboard`
-- `PUT /api/vendors/:vendorId/sound-device`
-- `POST /api/payments`
-- `POST /api/auth/token`
-- `POST /api/transactions/requery`
+- `POST /api/payments/verify-inline`
 - `POST /api/interswitch/redirect`
-- `POST /api/wallet/initialize`
-- `POST /api/wallet/status`
-- `POST /api/virtual-accounts`
 - `POST /api/webhooks/interswitch`
 
-## Notes
+## References
 
-- Redirect notifications from Interswitch are not trusted directly. The backend requeries the transaction before redirecting the customer to the final frontend response page.
-- The webhook route verifies `X-Interswitch-Signature` when `INTERSWITCH_WEBHOOK_SECRET` is set.
-- The checkout buttons stay usable only when the required merchant config is available.
-- On startup, the backend creates the `vendors` and `payments` tables if they do not exist.
-- Successful payments can send translated SMS alerts to a synced sound-device number via Termii.
-
-## Docs used
-
-- [Web Checkout](https://docs.interswitchgroup.com/docs/web-checkout)
-- [Authentication](https://docs.interswitchgroup.com/docs/authentication)
-- [Non Card Payments](https://docs.interswitchgroup.com/docs/non-card-payments)
-- [Webhooks](https://docs.interswitchgroup.com/docs/webhooks)
+- [Interswitch Web Checkout](https://docs.interswitchgroup.com/docs/web-checkout)
+- [Interswitch Authentication](https://docs.interswitchgroup.com/docs/authentication)
+- [Interswitch Non-Card Payments](https://docs.interswitchgroup.com/docs/non-card-payments)
 - [Termii Messaging API](https://developers.termii.com/messaging-api)

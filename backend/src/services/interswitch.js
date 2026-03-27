@@ -172,6 +172,7 @@ export async function getPublicConfig() {
   return {
     mode: config.mode,
     currency: config.currency,
+    supportedCurrencies: config.supportedCurrencies,
     merchantCode: derivedMerchantCode,
     payItemId: config.payItemId,
     payItemName: config.payItemName,

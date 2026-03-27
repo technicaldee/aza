@@ -86,9 +86,20 @@
             <div class="space-y-2">
               <label class="text-sm font-bold uppercase tracking-widest text-outline font-headline">Enter Amount</label>
               <div class="flex items-center gap-3 rounded-lg bg-surface-container-high p-4">
-                <span class="text-2xl font-black text-primary">₦</span>
+                <span id="currency-symbol" class="text-2xl font-black text-primary">₦</span>
                 <input id="amount-input" class="w-full border-none bg-transparent p-0 text-3xl font-black text-on-surface focus:ring-0" placeholder="0.00" type="number" value="500" />
               </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-bold uppercase tracking-widest text-outline font-headline">Currency</label>
+              <select
+                id="currency-select"
+                class="w-full rounded-lg border border-outline-variant/30 bg-white px-4 py-4 font-semibold text-on-surface focus:border-primary focus:ring-primary/20"
+              >
+                <option value="566">Nigerian Naira (NGN)</option>
+              </select>
+              <p class="text-xs text-slate-500">Default is Naira. You can switch to any supported Interswitch currency.</p>
             </div>
 
             <div class="space-y-2">
